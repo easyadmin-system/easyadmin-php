@@ -1,0 +1,107 @@
+<?php include "_doctype.html";?>
+<?php $__section = "configuration";?>
+<?php $__page = "sysconfig";?>
+<?php $__title = "Obecná nastavení";?>
+
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $__title;?> | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="sysconfig">
+		<div id="container">
+			<?php include "templ/sidebar/_configuration.html";?>
+
+			<div class="wrap">
+
+				<form action="/sysconfig?action=save" id="sysConfigForm" method="post">
+
+					<div class="title">
+						<h1><?php echo $__title;?></h1>
+						<ul class="buttons">
+							<li><a id="save" href="#">Uložit nastavení</a></li>
+						</ul>
+					</div>
+
+					<div class="subtitle">
+					</div>
+
+					<div class="content">
+						<div class="leftside">
+							<div class="form">
+								<!-- Chybové hlášky -->
+								<?php if ($actions["action"] == "save"):?>
+									<div class="notice">
+										<?php if ($actions["status"] == 1):?>
+											<div class="window success">
+												<h2>Nastavení bylo úspěšně uloženo.</h2>
+											</div>
+										<?php else:?>
+											<div class="window error">
+												<?php echo $dict["internalError"];?>
+											</div>
+										<?php endif;?>
+									</div>
+								<?php endif;?>
+
+								<?php foreach ($options as $key => $val) {?>
+
+									<?php if ($val["type"] == "text"):?>
+										<p>
+											<label for="<?php echo $key;?>" class="bold"><?php echo $dict["sysconfig"][$key];?></label><br />
+											<input type="text" class="text" name="<?php echo $key;?>" id="<?php echo $key;?>" value="<?php echo $val["value"];?>" maxlength="255" />
+										</p>
+									<?php elseif($val["type"] == "number"):?>
+										<p>
+											<label for="<?php echo $key;?>" class="bold"><?php echo $dict["sysconfig"][$key];?></label><br />
+											<input type="text" class="text number" name="<?php echo $key;?>" id="<?php echo $key;?>" value="<?php echo $val["value"];?>" maxlength="10" />
+										</p>
+									<?php elseif($val["type"] == "checkbox"):?>
+										<p>
+											<input type="checkbox" name="<?php echo $key;?>" value="1" id="<?php echo $key;?>" <?php echo ($val["value"] ? 'checked="checked"':'');?> />
+											<label for="<?php echo $key;?>" class="bold"><?php echo $dict["sysconfig"][$key];?></label>
+										</p>
+									<?php endif;?>
+									<?php //Dict::helper($dict["userNameRulesTooltip"]);?>
+								<?php }?>
+
+								<!-- Odeslání formuláře -->
+								<script type="text/javascript">
+									var submit = new Submiter(
+										"sysConfigForm",
+										"save"
+									);
+								</script>
+							</div>
+						</div>
+
+						<div class="rightside">
+							<div class="titledBox side">
+								<h2>Nemáte na mysli&hellip;?</h2>
+								<div class="inside">
+									<ul class="linklist">
+										<li><a href="/settings">Nastavení Vašeho účtu</a></li>
+										<li><a href="/setpass">Změnit heslo</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+					</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

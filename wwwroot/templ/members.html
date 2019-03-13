@@ -1,0 +1,248 @@
+<?php include "_doctype.html";?>
+<?php $__section = "configuration";?>
+<?php $__page = "members";?>
+
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title>Správa uživatelů | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="members">
+		<div id="container">
+			<?php include "templ/sidebar/_configuration.html";?>
+
+			<div class="wrap">
+				<!-- Editace uživatele -->
+				<?php if ($actions["action"] == "editUser" || $actions["action"] == "modifyUser"):?>
+					<?php include "templ/members/_edit_user.html";?>
+				<?php elseif ($actions["action"] == "newPass" || $actions["action"] == "changePass"):?>
+					<?php include "templ/members/_change_pass.html";?>
+				<?php else:?>
+					<div class="title">
+						<h1>Správa uživatelů</h1>
+					</div>
+
+					<div class="subtitle">
+					</div>
+
+					<div class="content">
+						<div class="leftside">
+							<!-- Přidání uživatele - hlášky -->
+							<?php if ($actions["action"] == "addUser"):?>
+								<div class="notice">
+									<?php if ($actions["status"] == 1):?>
+										<div class="window success">
+											<h2>Uživatel byl úspěšně vytvořen.</h2>
+										</div>
+									<?php else:?>
+										<div class="window error">
+											<?php if ($actions["errors"]["exists"] == 1):?>
+												<h2>Uživatel již existuje.</h2>
+												<p>Zvolte prosím jiné uživatelské jméno.</p>
+											<?php elseif ($actions["errors"]["validity"] == 1):?>
+												<h2>Uživatelské jméno obsahuje nepovolené znaky.</h2>
+												<p>Zvolte prosím jiné uživatelské jméno.</p>
+											<?php elseif ($actions["errors"]["password"] == 1):?>
+												<h2>Zvolené heslo není dostatečně dlouhé.</h2>
+												<p>Musí obsahovat alespoň 5 znaků</p>
+											<?php elseif ($actions["errors"]["authority"] == 1):?>
+												<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+												<p>Nelze zvolit uživateli vyšší práva, než-li máte Vy.</p>
+											<?php endif;?>
+										</div>
+									<?php endif;?>
+								</div>
+							<!-- Smazání uživatele - hlášky -->
+							<?php elseif ($actions["action"] == "removeUser"):?>
+								<div class="notice">
+									<?php if ($actions["status"] == 1):?>
+										<div class="window success">
+											<h2>Uživatel byl úspěšně smazán.</h2>
+										</div>
+									<?php else:?>
+										<div class="window error">
+											<?php if ($actions["errors"]["uidDoesNotExists"] == 1):?>
+												<h2>Uživatel s tímto ID neexistuje.</h2>
+											<?php elseif ($actions["errors"]["selfAccountRemove"] == 1):?>
+												<h2>Nelze odstranit vlastní uživatelský účet.</h2>
+											<?php elseif ($actions["errors"]["insufficientPermissions"] == 1):?>
+												<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+												<p>Nelze smazat uživatele s vyššími právy, než kterými disponujete.</p>
+											<?php endif;?>
+										</div>
+									<?php endif;?>
+								</div>
+							<?php endif;?>
+
+							<?php if ($actions["showUserList"] == 1):?>
+								<!-- Seznam uživatelů -->
+								<div class="titledBox">
+									<h2>Seznam uživatelů</h2>
+									<table class="itemList">
+										<thead>
+											<tr>
+												<th>Uživatel</th>
+												<th>Poslední přihlášení</th>
+												<th>Oprávnění</th>
+												<th>Stav</th>
+												<th>Akce</th>
+											</tr>
+										</thead>
+										<?php foreach ($data["users"]["user"] as $key => $val) { ?>
+											<tr<?php if (($key % 2) != 0) echo ' class="even"';?>>
+												<!-- Uživatel -->
+												<td class="leftalign">
+													<!-- Hvězdička -->
+													<?php if ($application["starsSupport"] == 1):?>
+														<img src="/img/ico/st/<?php echo $val["star"];?>.png" alt="Hvězdička" title="Hvězdička" />
+													<?php endif;?>
+
+													<!-- Pohlaví -->
+													<?php if ($val["sex"] == 0):?>
+														<img src="/img/ico/sex/male.png" alt="Muž" title="Muž" />
+													<?php elseif ($val["sex"] == 1):?>
+														<img src="/img/ico/sex/female.png" alt="Žena" title="Žena" />
+													<?php elseif ($val["sex"] == 2):?>
+														<img src="/img/ico/sex/group.png" alt="Skupina" title="Skupina" />
+													<?php endif;?>
+
+													<!-- Uživ. jméno -->
+													<a href="/profile?user=<?php echo $val["username"];?>" title="Zobrazit profil">
+														<?php echo $val["username"];?>
+													</a>
+												</td>
+
+												<!-- Poslední přihlášení -->
+												<td class="centeralign"><?php echo date("d.m.Y - H:i:s", $val["last_login"]);?></td>
+
+												<!-- Oprávnění -->
+												<td class="centeralign">
+													<?php if ($val["authority"] == 1):?>
+														<img src="/img/ico/ico-moderator.png" alt="Moderator" title="<?php Dict::authority($val["authority"]);?>" />
+													<?php elseif ($val["authority"] >= 2):?>
+														<img src="/img/ico/ico-admin.png" alt="Admin" title="<?php Dict::authority($val["authority"]);?>" />
+													<?php endif;?>
+												</td>
+
+												<!-- Stav -->
+												<td class="centeralign">
+													<?php if (($val["last_login"] > (time()-900)) && ($val["last_login"] != $val["registration"])):?>
+														<img src="/img/ico/ico-online.png" alt="Online" title="Uživatel je online" />
+													<?php endif;?>
+												</td>
+
+												<!-- Akce -->
+												<td class="centeralign">
+													<a href="/members?action=editUser&amp;userId=<?php echo $val["uid"];?>"><img src="/img/ico/ico-edit.png" alt="Upravit" title="Upravit" /></a>
+
+													<a href="/members?action=removeUser&amp;userId=<?php echo $val["uid"];?>"><img src="/img/ico/ico-delete.png" alt="Smazat" title="Smazat" /></a>
+												</td>
+											</tr>
+										<?php } ?>
+
+									</table> 
+								</div>
+							<?php endif;?>
+						</div>
+
+						<div class="rightside">
+							<div class="titledBox side">
+								<h2>Možnosti</h2>
+								<div class="inside">
+									<ul class="linklist">
+										<li><a href="#" id="addUserButt">Přidat uživatele</a></li>
+										<!--
+										<li><a href="#">Najít uživatele</a></li>
+										<li><a href="/log">Hledat v záznamech</a></li>
+										<li><a href="/bans">Zablokovat uživatele</a></li>
+										-->
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+
+						<!-- JS Popup pro přidání uživatele -->
+						<div id="addUserWin" class="popup displaynopopup">
+							<h4>Přidat uživatele</h4>
+
+							<div class="form">
+								<form action="/members?action=addUser" id="addUserForm" method="post">
+									<p>
+										<label for="username" class="bold">Uživatelské jméno:</label><br />
+										<input type="text" class="text" name="username" id="username" value="<?php echo $addUser["username"];?>" maxlength="20" />
+										<?php Dict::helper($dict["userNameRulesTooltip"]);?>
+									</p>
+
+									<p>
+										<label for="password" class="bold">Heslo:</label><br />
+										<input type="text" class="text" name="password" id="password" />
+										<?php Dict::helper($dict["userPassRulesToolTip"]);?>
+									</p>
+
+									<p>
+										<label for="sex" class="bold">Pohlaví:</label><br />
+										<input type="radio" name="sex" value="0" id="male" checked="checked" /><label for="male">muž</label>
+										<input type="radio" name="sex" value="1" id="female" /><label for="female">žena</label>
+										<input type="radio" name="sex" value="2" id="group" /><label for="group">skupina</label>
+									</p>
+
+									<p>
+										<label for="authority" class="bold">Oprávnění:</label><br />
+										<select name="authority" id="authority">
+											<?php for ($i=0; $i != 6; $i++) { ?>
+												<option value="<?php echo $i;?>"><?php Dict::authority($i);?></option>
+											<?php } ?>
+										</select>
+										<?php Dict::helper($dict["userAuthorityTooltip"]);?>
+									</p>
+
+									<p id="addUserValidErr" class="errors nodisplay">
+										
+									</p>
+
+									<p class="last">
+										<input type="submit" name="addButton" class="button" value="Přidat uživatele" />
+									</p>
+								</form>
+
+								<!-- Validace formáláře -->
+								<script type="text/javascript">
+									var validAddUser = new Validator(
+										"addUserForm",
+										"addUserValidErr",
+										[
+											{
+												fieldName: "username",
+												error: "Není vyplněno uživatelské jméno."
+											},
+											{
+												fieldName: "password",
+												error: "Není vyplněno heslo."
+											}
+										]
+									);
+								</script>
+							</div>
+						</div>
+						<script type="text/javascript">
+							var addUser = new Popup({openOnRefresh: false, callElm: ["addUserButt"], popUpContent: "addUserWin"});
+						</script>
+
+					</div>
+				<?php endif;?>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

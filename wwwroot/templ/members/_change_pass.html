@@ -1,0 +1,82 @@
+<!-- Změna hesla uživatele -->
+<form action="/members?action=changePass" id="editUserForm" method="post">
+	<input type="hidden" name="userId" value="<?php echo $userDetail["id"];?>" />
+	<div class="title">
+		<h1>Změna hesla uživatele <span class="bold"><?php echo $userDetail["username"];?></span></h1>
+		<ul class="buttons">
+			<li><a id="save" href="#">Uložit změny</a></li>
+			<?php if ($actions["status"] == 1 && $actions["action"] == "changePass"):?>
+				<li><a id="back" href="/members?action=editUser&amp;userId=<?php echo $userDetail["id"];?>">Zpět na detail uživatele</a></li>
+			<?php else:?>
+				<li><a id="cancel" href="/members">Zrušit úpravy</a></li>
+			<?php endif;?>
+		</ul>
+	</div>
+
+	<div class="subtitle">
+	</div>
+
+	<div class="content">
+		<div class="leftside">
+			<div class="form">
+				<!-- Chybové hlášky -->
+				<?php if ($actions["action"] == "changePass"):?>
+					<div class="notice">
+						<?php if ($actions["status"] == 1):?>
+							<div class="window success">
+								<h2>Nové heslo bylo úspěšně nastaveno.</h2>
+							</div>
+						<?php else:?>
+							<div class="window error">
+								<?php if ($actions["errors"]["passLength"] == 1):?>
+									<h2>Heslo není příliš dlouhé.</h2>
+									<p>Musí obsahovat alespoň 5 znaků.</p>
+								<?php elseif ($actions["errors"]["uidDoesNotExists"] == 1):?>
+									<h2>Uživatel s tímto ID neexistuje.</h2>
+								<?php elseif ($actions["errors"]["notAuthorized"] == 1):?>
+									<h2>Nemáte oprávnění provádět tyto úpravy u uživatele s vyššími právy, než která máte Vy.</h2>
+								<?php else:?>
+									<?php echo $dict["internalError"];?>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+					</div>
+				<?php endif;?>
+				<?php if ($__errs == 1):?>
+					<div class="notice">
+						<div class="window error">
+							<h2>Uživatel s tímto ID neexistuje.</h2>
+						</div>
+					</div>
+				<?php else:?>
+
+					<!-- Editační pole -->
+					<p>
+						<label for="password" class="bold">Nové heslo:</label><br />
+						<input type="text" class="text" autocomplete="off" name="password" id="password" maxlength="" />
+						<?php Dict::helper($dict["userPassRulesToolTip"]);?>
+					</p>
+
+					<!-- Odeslání formuláře -->
+					<script type="text/javascript">
+						var submit = new Submiter(
+							"editUserForm",
+							"save"
+						);
+					</script>
+				<?php endif;?>
+			</div>
+		</div>
+
+		<div class="rightside">
+			<div class="titledBox side">
+				<h2>Možnosti</h2>
+				<div class="inside">
+					<ul class="linklist">
+						<li><a href="/members">Jít na seznam uživatelů</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

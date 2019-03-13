@@ -1,0 +1,193 @@
+<div class="leftside">
+	<!-- Notifikace - hlášky -->
+	<?php if ($actions["action"] == "createGroup"):?>
+		<div class="notice">
+			<?php if ($actions["status"] == 200):?>
+				<div class="window success">
+					<h2>Nová skupina byla úspěšně založena.</h2>
+				</div>
+			<?php else:?>
+				<div class="window error">
+					<?php if ($actions["errors"]["exists"] == 1):?>
+						<h2>Tato skupina již existuje.</h2>
+						<p>Zvolte prosím jiný název skupiny.</p>
+					<?php elseif ($actions["errors"]["length"] == 1):?>
+						<h2>Název skupiny je pčíliš krátký.</h2>
+						<p>Minimální počet znaků pro název skupiny musí být 3 znaky.</p>
+					<?php elseif ($actions["errors"]["insufficientPermissions"] == 1):?>
+						<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+					<?php endif;?>
+				</div>
+			<?php endif;?>
+		</div>
+	<?php endif;?>
+	<?php if ($actions["action"] == "removeGroup"):?>
+		<div class="notice">
+			<?php if ($actions["status"] == 200):?>
+				<div class="window success">
+					<h2>Skupina byla úspěšně smazána.</h2>
+				</div>
+			<?php else:?>
+				<div class="window error">
+					<?php if ($actions["errors"]["doesNotExist"] == 1):?>
+						<h2>Skupinu se nepodařilo smazat.</h2>
+						<p>Skupina s tímto ID neexistuje.</p>
+					<?php elseif ($actions["errors"]["insufficientPermissions"] == 1):?>
+						<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+					<?php endif;?>
+				</div>
+			<?php endif;?>
+		</div>
+	<?php endif;?>
+
+	<!-- Seznam skupin -->
+	<?php if ($groups):?>
+		<div class="titledBox">
+			<h2>Abecední seznam skupin</h2>
+			<table class="itemList">
+				<thead>
+					<tr>
+						<th>Název skupiny</th>
+						<th>Členů</th>
+						<th>Akce</th>
+					</tr>
+				</thead>
+				<?php foreach ($data["groups"] as $key => $val) { ?>
+					<tr<?php if (($key % 2) != 0) echo ' class="even"';?>>
+						<!-- Skupina -->
+						<td class="leftalign">
+							<!-- Název -->
+							<a href="/groups?groupId=<?php echo $val["id"];?>">
+								<?php echo $val["name"];?>
+							</a>
+						</td>
+
+						<!-- Počet členů -->
+						<?php $members = $val["members"];?>
+						<td class="centeralign"><?php echo $members ? $members : "žádní";?></td>
+
+						<!-- Akce -->
+						<td class="centeralign">
+							<a href="/groups?groupId=<?php echo $val["id"];?>"><img src="/img/ico/members.png" alt="Zobrazit členy" title="Zobrazit členy" /></a>
+							<?php if ($user["authority"] >= $requiredAuth):?>
+								<a href="/groups?groupId=<?php echo $val["id"];?>&amp;action=editGroup"><img src="/img/ico/ico-edit.png" alt="Změnit název nebo spravovat členy" title="Změnit název nebo spravovat členy" /></a>
+								<a href="/groups?action=removeGroup&amp;groupId=<?php echo $val["id"];?>"><img src="/img/ico/ico-delete.png" alt="Smazat skupinu" title="Smazat skupinu" /></a>
+							<?php endif;?>
+						</td>
+					</tr>
+				<?php } ?>
+
+			</table> 
+		</div>
+	<?php endif;?>
+</div>
+
+<!-- Pravá strana - postranní box -->
+<div class="rightside">
+	<?php if ($user["authority"] >= $requiredAuth):?>
+		<div class="titledBox side">
+			<h2>Možnosti</h2>
+			<div class="inside">
+				<ul class="linklist">
+					<li><a href="#" id="createGroupButt">Vytvořit skupinu</a></li>
+				</ul>
+			</div>
+		</div>
+	<?php endif;?>
+</div>
+<div class="clear"></div>
+
+<!-- JS Popup pro přidání skupiny -->
+<div id="createGroupWin" class="popup displaynopopup">
+	<h4>Přidat skupinu</h4>
+
+	<div class="form p350">
+		<form action="/groups?action=createGroup" id="createGroupForm" method="post">
+			<p>
+				<label for="name" class="bold">Název skupiny:</label><br />
+				<input type="text" class="text" name="name" id="name" value="<?php echo $createGroup["name"];?>" maxlength="255" />
+				<?php Dict::helper($dict["groups"]["nameRulesTooltip"]);?>
+			</p>
+
+			<h5>Oprávnění:</h5>
+
+			<div id="privileges">
+				<p class="module">
+					<label for="pages_category" class="bold">Kategorie stránek:</label><br />
+					<select name="pages_category" id="pages_category">
+						<option value="0">Nezařazené</option>
+						<option value="1">Ostatní</option>
+					</select>
+					<?php Dict::helper($dict["groups"]["categoriesAuthToolTip"]);?><br />
+
+					<span class="set">
+						<input type="radio" name="cat0" value="0" id="cat0_val0" checked="checked" /><label for="cat0_val0">bez oprávnění</label>
+						<input type="radio" name="cat0" value="1" id="cat0_val1" /><label for="cat0_val1">správce</label>
+						<input type="radio" name="cat0" value="2" id="cat0_val2" /><label for="cat0_val2">hlavní správce</label>
+					</span>
+					<span class="set nodisplay">
+						<input type="radio" name="cat1" value="0" id="cat1_val0" checked="checked" /><label for="cat1_val0">bez oprávnění</label>
+						<input type="radio" name="cat1" value="1" id="cat1_val1" /><label for="cat0_val1">správce</label>
+						<input type="radio" name="cat1" value="2" id="cat1_val2" /><label for="cat0_val2">hlavní správce</label>
+					</span>
+				</p>
+
+				<p class="module">
+					<label for="articles_sections" class="bold">Články:</label><br />
+					<select name="articles_sections" id="articles_sections">
+						<option value="0">Nezařazené</option>
+						<option value="1">Ostatní</option>
+						<option value="2">Novinky</option>
+					</select>
+					<?php Dict::helper($dict["groups"]["sectionsAuthToolTip"]);?><br />
+
+					<span class="set">
+						<input type="radio" name="sec0" value="0" id="sec0_val0" checked="checked" /><label for="sec0_val0">bez oprávnění</label>
+						<input type="radio" name="sec0" value="1" id="sec0_val1" /><label for="sec0_val1">přispěvatel</label>
+						<input type="radio" name="sec0" value="2" id="sec0_val2" /><label for="sec0_val2">redaktor</label>
+						<input type="radio" name="sec0" value="3" id="sec0_val3" /><label for="sec0_val3">šéfredaktor</label>
+					</span>
+					<span class="set nodisplay">
+						<input type="radio" name="sec1" value="0" id="sec1_val0" checked="checked" /><label for="sec1_val0">bez oprávnění</label>
+						<input type="radio" name="sec1" value="1" id="sec1_val1" /><label for="sec0_val1">přispěvatel</label>
+						<input type="radio" name="sec1" value="2" id="sec1_val2" /><label for="sec0_val2">redaktor</label>
+						<input type="radio" name="sec1" value="3" id="sec1_val3" /><label for="sec0_val3">šéfredaktor</label>
+					</span>
+					<span class="set nodisplay">
+						<input type="radio" name="sec2" value="0" id="sec2_val0" checked="checked" /><label for="sec2_val0">bez oprávnění</label>
+						<input type="radio" name="sec2" value="1" id="sec2_val1" /><label for="sec0_val1">přispěvatel</label>
+						<input type="radio" name="sec2" value="2" id="sec2_val2" /><label for="sec0_val2">redaktor</label>
+						<input type="radio" name="sec2" value="3" id="sec2_val3" /><label for="sec0_val3">šéfredaktor</label>
+					</span>
+				</p>
+			</div>
+
+			<p id="createGroupValidErr" class="errors nodisplay"></p>
+
+			<p class="last">
+				<input type="submit" name="submit-button" class="button" value="Vytvořit skupinu" />
+			</p>
+		</form>
+
+		<script type="text/javascript">
+			/* Validace formuláře */
+			var validCreateGroup = new Validator(
+				"createGroupForm",
+				"createGroupValidErr",
+				[
+					{
+						fieldName: "name",
+						error: "Není vyplněn název skupiny."
+					}
+				]
+			);
+
+			/* Groups */
+			var groups = new Groups.Switcher();
+			var memberList = new Groups.MemberList();
+		</script>
+	</div>
+</div>
+<script type="text/javascript">
+	var addGroup = new Popup({openOnRefresh: false, callElm: ["createGroupButt"], popUpContent: "createGroupWin"});
+</script>

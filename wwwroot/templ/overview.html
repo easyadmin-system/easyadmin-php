@@ -1,0 +1,39 @@
+<?php include "_doctype.html";?>
+<?php $__section = "overview";?>
+
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title>Přehled | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="overview">
+		<div id="container">
+			<?php include "templ/sidebar/_overview.html";?>
+
+			<div class="wrap">
+				<div class="title">
+					<h1>Přehled</h1>
+				</div>
+
+				<div class="subtitle">
+				</div>
+
+				<div class="content">
+					<p>Jste přihlášen<?php if ($sex == 1) echo "a";?> v testovací verzi redakčního systému Easy Admin System 3.</p>
+					<p>Veškeré ohlasy prosím směřujte na e-mail <a href="<?php echo $application["admin"];?>"><?php echo $application["admin"];?></a>.</p>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+/*- CSS Prolog -*/
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, img, textarea	{ margin:0; padding:0; font-family:"Arial CE", Arial, "Helvetica CE", Helvetica, sans-serif; color:#000; border:none; }
+/*- Definice zakladniho font-size, tak aby to spocitala i Opera -*/
+html														{ font-size:106.5%; background:#DBDBDB; }
+body														{ font-size:76.5%; }
+table														{ font-size:100%; }
+
+/*- Zakladni vlastnosti -*/
+a															{ color:#0000CC; }
+a:hover														{ color:#CC0000; }
+a:visited													{ color:#000099; }
+img															{ border:0; }
+
+/*- Obecné classy CSS prologu -*/
+.cleaner, .clear											{ clear:both; height:1px; font-size:1px; visibility:hidden; overflow:hidden; }
+.hide, .blind												{ position:absolute; left:-1000px; top:-1000px; width:1px; height:1px; overflow:hidden; }
+.nodisplay													{ display:none; }
+.bold														{ font-weight:bold; }
+.leftalign													{ text-align:left; }
+.rightalign													{ text-align:right; }
+.centeralign												{ text-align:center; }
+
+/*- Další obecné classy -*/
+.icon12, .icon16											{ display:inline-block; }
+.icon12														{ width:12px; height:12px; }
+.icon16														{ width:16px; height:16px; }
+
+/*- Pro stránky Login, Notice -*/
+.page .blueBox												{ position:relative; margin:70px auto; width:654px; height:434px; background:url(/img/loginbox-bg.png) no-repeat; }
+
+/*- Notices -*/
+.notice .blueBox											{ padding-top:130px; }
+.notice .window												{ margin:0 auto; min-height:40px; padding:10px 20px 10px 70px; border-radius:5px; box-shadow:0 1px 2px rgba(0,0,0,0.25); }
+.notice .window h1, .notice .window h2						{ font-size:108.5% !important; font-weight:bold !important; }
+.notice .window h2, .notice .window p						{ padding-left:10px !important; }
+.notice .window a											{ color:#33425E; }
+.notice .window a:hover										{ color:#4F6691; }
+.notice .window ul											{ list-style:square; }
+.notice .window ul li										{ margin:3px 25px; }
+.notice .window.error										{ background:#FFD2D3 url(/img/notice-error.png); border:1px solid #DF8F90; }
+.notice .window.warning										{ background:#FEFCCB url(/img/notice-warning.png); border:1px solid #E5DB55; }
+.notice .window.info										{ background:#DBECFF url(/img/notice-info.png); border:1px solid #9FC7F5; }
+.notice .window.success										{ background:#D4FFCD url(/img/notice-success.png); border:1px solid #9ADF8F; }
+.notice .window.error,
+ .notice .window.warning,
+ .notice .window.info,
+ .notice .window.success									{ background-position:20px 10px; background-repeat:no-repeat; }
+
+.page#notice .notice										{ padding-top:130px; }
+.page#notice .notice .window								{ width:440px; }
+.page .leftside .notice .window								{ width:635px; margin-bottom:10px; }
+
+.page#notice ul.bottomMenu									{ margin-top:30px; margin-left:80px; list-style-type:circle; }
+.page#notice ul.bottomMenu li,
+ .page#notice ul.bottomMenu li a,
+ .page#notice ul.bottomMenu p								{ color:#FFF; }
+.page#notice ul.bottomMenu li a:hover						{ color:#DBECFF; }
+.page#notice ul.bottomMenu p								{ font-weight:bold; margin-left:-14px; margin-bottom:1px; }
+
+/*- Login -*/
+.page#login p.lock											{ margin-top:80px; margin-left:100px; }
+.page#login h1												{ margin:130px 0 0 225px; font-size:280%; color:#E1E1E1; font-weight:normal; text-shadow:1px 1px #000; }
+.page#login h1, .page#login p.lock,
+.page#login .loginForm										{ position:absolute; }
+.page#login .loginForm										{ margin-top:220px; margin-left:110px; }
+.page#login .loginForm p									{ color:#FFF; float:left; }
+.page#login .loginForm p.field								{ font-size:160%; width:250px; }
+.page#login .loginForm p.field label						{ display:inline-block; padding-bottom:7px; }
+.page#login .loginForm input.textfield#username				{ background:url(/img/loginform-text-input-user.png); }
+.page#login .loginForm input.textfield#password				{ background:url(/img/loginform-text-input-pass.png); }
+.page#login .loginForm input.textfield						{ width:170px; height:30px; border:0; padding-left:37px; padding-right:10px; color:#828282; font-size:80%; background-position:fixed; }
+.page#login .loginForm input.textfield:focus				{ color:#000; }
+
+.page#login .loginForm p.status								{ margin-top:30px; font-size:108.5%; max-width:310px; }
+.page#login .loginForm p.status.err							{ padding-left:18px; background:url(/img/loginform-icon-denied.png) left 2px no-repeat; }
+.page#login .loginForm p.status .t							{ color:#E91C24; }
+.page#login .loginForm p.submit								{ margin-top:26px; margin-right:32px; float:right; }
+.page#login .loginForm p.submit input						{ background:url(/img/loginform-button.png) no-repeat; letter-spacing:1px; width:113px; height:35px; border:0; font-weight:bold; font-size:123.5%; color:#23597F; text-shadow:1px 1px #FFF; cursor:pointer; }
+.page#login .loginForm p.submit input:hover					{ background-position:0 -35px; color:#183A52; text-shadow:1px 1px #D2D2D2; }
+
+/*- Hlavička -*/
+.head														{ width:100%; height:100px; background:url(/img/head-bg.png) repeat-x; }
+.head .inside												{ width:1200px; margin:0 auto; position:relative; }
+.head .topline, .head .logo									{ position:absolute; }
+.head .logo													{ top:25px; left:40px; }
+.head .topline												{ top:10px; right:10px; }
+.head .topline, .head .topline a							{ color:#FFF; font-weight:normal; }
+.head .topline a:hover										{ color:#DBECFF; }
+
+/*- Horní navigace -*/
+.head .topnav												{ position:absolute; top:47px; right:0; }
+.head .topnav li											{ display:inline-block; }
+.head .topnav li a											{ display:block; width:132px; height:42px; padding-top:11px; padding-left:30px; font-weight:normal; font-size:108.5%; text-decoration:none; color:#C8D3E7; text-align:center; }
+
+.head .topnav li.overview a									{ background:url(/img/topnav-overview.png); }
+.head .topnav li.content a									{ background:url(/img/topnav-content.png); }
+.head .topnav li.configuration a							{ background:url(/img/topnav-configuration.png); }
+.head .topnav li.statistics a								{ background:url(/img/topnav-statistics.png); }
+.head .topnav li.help a										{ background:url(/img/topnav-help.png); }
+
+.head .topnav li a:hover									{ background-position:0 -53px; }
+.head .topnav li.actived a									{ color:#000; background-position:0 -106px; }
+
+/*- Obsahová část -*/
+.page														{  }
+#container													{ margin:20px auto; width:1200px; background:#FFF; border-radius:5px; box-shadow:0 1px 5px rgba(0,0,0,0.25); }
+
+/*- Postranní sloupec -*/
+.sidebar {
+	width:259px; height:100%; border-right:1px solid #D9D9D9; float:left;
+	background-color: #F1F2F4;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F1F2F4), to(#E8EBF0));
+	background:-webkit-linear-gradient(top, #F1F2F4, #E8EBF0);
+	background:-moz-linear-gradient(top, #F1F2F4, #E8EBF0);
+	background:-ms-linear-gradient(top, #F1F2F4, #E8EBF0);
+	background: -o-linear-gradient(top, #F1F2F4, #E8EBF0);
+	background:-moz-linear-gradient(top, #F1F2F4, #E8EBF0);
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}
+
+.wrap														{ width:940px; float:right; height:100%; background:#FFF url(/img/sidebar-shadow.png) repeat-y; border-top-right-radius:5px; }
+.wrap .title {
+	width:100%; height:50px;
+	background-color:#383838;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#383838), to(#222));
+	background:-webkit-linear-gradient(top, #383838, #222);
+	background:-moz-linear-gradient(top, #383838, #222);
+	background:-ms-linear-gradient(top, #383838, #222);
+	background:-o-linear-gradient(top, #383838, #222);
+	background:-moz-linear-gradient(top, #383838, #222);
+	border-top-right-radius:5px;
+}
+
+.sidebar ul													{ margin:20px 0; list-style-type:none; }
+.sidebar ul h5												{ padding-left:40px; padding-bottom:2px; font-size:123.5%; background-position:18px 2px; }
+.sidebar ul h5 a:hover										{ border-bottom:1px dotted #565962; }
+.sidebar ul h5, .sidebar ul a								{ color:#7A7E87; text-decoration:none; }
+.sidebar ul li a											{ display:block; padding:4px 0; }
+.sidebar ul a:hover											{ color:#565962; }
+.sidebar ul li a											{ padding-left:59px; font-size:108.5%; background-position:40px 7px; }
+.sidebar ul li.actived										{ font-weight:bold; }
+.sidebar ul li:hover										{ background:#BEC7D6 url(/img/sidebar-menu-hover-item.png) repeat-x; }
+
+.sidebar ul h5, .sidebar ul li a							{ background-image:url(/img/dot.png); background-repeat:no-repeat; }
+.sidebar ul h5.account										{ background-image:url(/img/ico/account.png); }
+.sidebar ul h5.configuration								{ background-image:url(/img/ico/configuration.png); }
+.sidebar ul h5.overview										{ background-image:url(/img/ico/overview.png); }
+.sidebar ul h5.records										{ background-image:url(/img/ico/records.png); }
+.sidebar ul h5.my-records									{ background-image:url(/img/ico/my-records.png); }
+.sidebar ul h5.pages										{ background-image:url(/img/ico/pages.png); }
+.sidebar ul h5.articles										{ background-image:url(/img/ico/articles.png); }
+.sidebar ul h5.help											{ background-image:url(/img/ico/help.png); }
+
+.sidebar ul li a.members									{ background-image:url(/img/ico/users.png); }
+.sidebar ul li a.groups										{ background-image:url(/img/ico/groups.png); }
+.sidebar ul li a.sysconfig									{ background-image:url(/img/ico/sysconfig.png); }
+.sidebar ul li a.acceptions									{ background-image:url(/img/ico/acceptions.png); }
+.sidebar ul li a.bans										{ background-image:url(/img/ico/bans.png); }
+.sidebar ul li a.log										{ background-image:url(/img/ico/log.png); }
+.sidebar ul li a.logins										{ background-image:url(/img/ico/logins.png); }
+.sidebar ul li a.notifications								{ background-image:url(/img/ico/notifications.png); }
+.sidebar ul li a.settings									{ background-image:url(/img/ico/params.png); }
+.sidebar ul li a.setpass									{ background-image:url(/img/ico/key.png); }
+.sidebar ul li a.notes										{ background-image:url(/img/ico/notes.png); }
+.sidebar ul li a.page-edit									{ background-image:url(/img/ico/page-edit.png); }
+.sidebar ul li a.pages										{ background-image:url(/img/ico/page-list.png); }
+.sidebar ul li a.create-page								{ background-image:url(/img/ico/create-page.png); }
+.sidebar ul li a.sections									{ background-image:url(/img/ico/folder-open.png); }
+.sidebar ul li a.create-article								{ background-image:url(/img/ico/create-page.png); }
+
+/*- Hlavní obsah - pravá strana - titulek -*/
+.wrap .title h1												{ font-size:139.5%; padding:13px 0 0 25px; color:#FFF; float:left; }
+.wrap .title ul.buttons										{ margin:8px 10px; float:right; list-style-type:none; }
+.wrap .title ul.buttons li									{ margin-left:5px; display:inline-block; border-radius:3px; border:1px solid #252525; }
+.wrap .title ul.buttons li {
+	background-color:#4A4A4A;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#353535));
+	background:-webkit-linear-gradient(top, #4A4A4A, #353535);
+	background:-moz-linear-gradient(top, #4A4A4A, #353535);
+	background:-ms-linear-gradient(top, #4A4A4A, #353535);
+	background: -o-linear-gradient(top, #4A4A4A, #353535);
+	background:-moz-linear-gradient(top, #4A4A4A, #353535);
+}
+.wrap .title ul.buttons li:hover {
+	background-color:#4A4A4A;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#656565), to(#535353));
+	background:-webkit-linear-gradient(top, #656565, #535353);
+	background:-moz-linear-gradient(top, #656565, #535353);
+	background:-ms-linear-gradient(top, #656565, #535353);
+	background: -o-linear-gradient(top, #656565, #535353);
+	background:-moz-linear-gradient(top, #656565, #535353);
+}
+.wrap .title ul.buttons li a								{ color:#DBDBDB; padding:6px 12px 8px 32px; display:block; font-size:108.5%; font-weight:bold; text-decoration:none; background-image:url(/img/dot.png); background-repeat:no-repeat; background-position:10px center; }
+.wrap .title ul.buttons li a#save							{ background-image:url(/img/ico/titbutt/save.png); }
+.wrap .title ul.buttons li a#cancel							{ background-image:url(/img/ico/titbutt/cancel.png); }
+.wrap .title ul.buttons li a#back							{ background-image:url(/img/ico/titbutt/back.png); }
+
+/*- Podtitulek -*/
+.subtitle													{
+	clear:both; position:relative; border-bottom:1px solid #DCDCDC; padding-left:20px;
+	background-color:#F3F3F3;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFF), to(#F3F3F3));
+	background:-webkit-linear-gradient(top, #FFF, #F3F3F3);
+	background:-moz-linear-gradient(top, #FFF, #F3F3F3);
+	background:-ms-linear-gradient(top, #FFF, #F3F3F3);
+	background: -o-linear-gradient(top, #FFF, #F3F3F3);
+	background:-moz-linear-gradient(top, #FFF, #F3F3F3);
+}
+.subtitle .shadow											{ position:absolute; top:0; left:0; width:10px; background:url(/img/sidebar-shadow.png) repeat-y; }
+.subtitle .row												{ margin:10px 5px; position:relative; min-height:28px; }
+.subtitle .row label										{ font-size:123.5%; }
+.subtitle .row input.textfield								{
+	height:30px; padding:1px 10px 0; font-size:115.5%; font-weight:bold; width:650px; border:1px solid #DBDBDB;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F2F2F2), to(#FFF));
+	background:-webkit-linear-gradient(top, #F2F2F2, #FFF);
+	background:-moz-linear-gradient(top, #F2F2F2, #FFF);
+	background:-ms-linear-gradient(top, #F2F2F2, #FFF);
+	background: -o-linear-gradient(top, #F2F2F2, #FFF);
+	background:-moz-linear-gradient(top, #F2F2F2, #FFF);
+}
+.subtitle .row input.button									{ height:35px; }
+
+
+/*- Obsah -*/
+.wrap .content												{ padding:15px 5px 20px 20px; }
+.wrap .content p											{ padding:10px; }
+.wrap .content h2											{ font-size:108.5%; font-weight:normal; }
+
+.content .leftside											{ float:left; width:720px; }
+.content .rightside											{ float:right; width:180px; }
+
+.content .titledBox											{ width:720px; border:5px solid #F2F2F2; border-radius:3px; margin-bottom:5px; }
+.content .titledBox h2										{ font-size:139.5%; display:block; height:20px; padding:9px 10px 11px; color:#6A737C; font-weight:normal; background:#DAE1EB url(/img/titledbox-title-bg.png) repeat-x; }
+.content .titledBox.wide									{ width:890px; }
+.content .titledBox.side									{ width:170px; }
+.content .titledBox.side h2									{ font-size:108.5%; }
+.content .titledBox .inside									{ background:#F9F9F9; color:#474747; font-size:95%; }
+.content .titledBox .inside p								{ color:#474747; }
+.content .titledBox .inside h6								{ font-size:100%; color:#474747; }
+.content .titledBox .inside a								{ color:#474747; text-decoration:none; }
+.content .titledBox .inside a:hover							{ text-decoration:underline; }
+.content .titledBox .inside ul								{ padding:8px; list-style-type:none; }
+.content .titledBox .inside ul.linklist a:before			{ content:"» "; }
+.content .titledBox .inside .row							{ padding:3px 8px; }
+.content .titledBox .inside .row ul.linklist				{ padding:0; }
+.content .titledBox .inside .row label						{ font-weight:bold; color:#474747; }
+.content .titledBox .inside .row select,
+ .content .titledBox .inside .row input[type=text]			{
+	color:#4F5660; border:1px solid #C7C7C7;
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#EDEDED), to(#FEFEFE));
+	background:-webkit-linear-gradient(top, #EDEDED, #FEFEFE);
+	background:-moz-linear-gradient(top, #EDEDED, #FEFEFE);
+	background:-ms-linear-gradient(top, #EDEDED, #FEFEFE);
+	background: -o-linear-gradient(top, #EDEDED, #FEFEFE);
+	background:-moz-linear-gradient(top, #EDEDED, #FEFEFE);
+}
+
+.content table.itemList										{ width:100%; }
+.content table.itemList thead								{ background:#DAE1EB; }
+.content table.itemList th, .content table td				{ padding:2px 10px; }
+.content table.itemList tr.even								{ background:#EEE; }
+.content table.itemList tr:hover							{ background:#CFCFCF; }
+.content table.itemList a									{ color:#000; font-weight:bold; }
+.content table.itemList a:hover								{ color:#666; }
+.content table.itemList td.actions a						{ text-decoration:none; }
+
+/*- Správa uživatelů -*/
+.page#members												{  }
+
+/*- Výpis stránek -*/
+.page#pages .subtitle										{ height:44px; }
+
+/*- Výpis článků -*/
+.page#articles .subtitle									{ height:44px; }
+
+/*- Editor -*/
+.page#editor .subtitle													{ padding-top:5px; }
+.page#editor .subtitle .row label										{  }
+.page#editor .subtitle .row input.textfield								{ position:absolute; left:120px; top:-4px; font-size:123.5%; width:700px; }
+.page#editor .subtitle .row input#title									{ font-size:155%; }
+.page#editor .subtitle .row input#url									{ color:#A0A0A0; font-weight:normal; }
+.page#editor .subtitle .row input#url:focus								{ color:#000; }
+.page#editor .subtitle .row .tooltip									{ position:absolute; left:855px; }
+.page#editor .content .titledBox.seo .inside							{ padding:5px 0 8px; }
+.page#editor .content .modules .text textarea							{ margin:0; padding:7px 10px; font-size:108.5%; width:698px; height:150px; border:1px solid #BBB; }
+.page#editor .content .modules .modCont									{  }
+.page#editor .content .modules .modCont h2								{  }
+.page#editor .content .modules .modCont ul.box-icons					{ float:right; }
+.page#editor .content .modules .modCont ul.box-icons li					{ display:inline-block; list-style-item:none; }
+.page#editor .content .modules .modCont ul.box-icons li a				{ display:block; width:24px; height:24px; background-image:url(/img/module-icons.png); }
+.page#editor .content .modules .modCont ul.box-icons li a.move			{ background-position:24px -24px; }
+.page#editor .content .modules .modCont ul.box-icons li a.move:hover	{ background-position:24px 0; }
+.page#editor .content .modules .modCont ul.box-icons li a.remove		{ background-position:0 -24px; }
+.page#editor .content .modules .modCont ul.box-icons li a.remove:hover	{ background-position:0 0; }
+
+/*- Skupiny a oprávnění -*/
+.page#groups .popup p.module								{ overflow:auto; }
+.page#groups .content .titledBox							{ max-width:400px; }
+.page#groups .content .itemList a.set-admin,
+ .page#groups .content .itemList a.unset-admin				{ background-image:url(/img/ico/icons-groupadmin.png); }
+.page#groups .content .itemList a.unset-admin:hover			{ background-position:0 -48px; }
+.page#groups .content .itemList a.set-admin					{ background-position:0 -16px; }
+.page#groups .content .itemList a.set-admin:hover			{ background-position:0 -32px; }
+
+/*- Obecná nastavení systému -*/
+.page#sysconfig .form input.text, .form select				{ width:600px; }
+.page#sysconfig .form input.text.number						{ width:100px; }
+.page#sysconfig .form p										{ margin-bottom:15px; }
+
+/*- Poznámky -*/
+.page#notes .textfield										{ margin-top:10px; }
+.page#notes .textfield textarea								{ padding:10px 12px; width:850px; border:1px solid #BBB; }
+
+/*- Patička -*/
+#foot														{ height:50px; background:url(/img/foot-bg.png) repeat-x; }
+#foot .inside												{ width:1200px; margin:0 auto; height:50px; background:url(/img/foot-logo.png) 40px 18px no-repeat; }
+#foot p														{ text-align:right; font-weight:normal; padding-top:22px; padding-right:20px; font-size:93%; }
+#foot p, #foot a											{ color:#FFF; text-decoration:none; }
+#foot a:hover												{ color:#999; text-decoration:underline; }
+#foot .pipe													{ color:#999; }
+
+/*- Vyskakovací okna -*/
+.window-content												{ background:#FFF; }
+.PopUpMain													{ position:absolute !important; padding:0; margin:0; display:none; visibility:hidden; z-index:10; }
+.PopUpBg													{ opacity:0.6; filter:alpha(opacity=60); position:fixed; _position:absolute; top:0; left:0; width:100%; height:100%; background:#000; display:none; visibility:hidden; zoom:1; z-index:8; }
+.PopUpClose													{ position:absolute; top:-10px; right:0; color:#CCCCCC; font-weight:bold; font-size:139.5%; }
+.displaynopopup												{ display:none; }
+.popup h4													{ font-size:108.5%; color:#25375D; }
+.popup h5													{ font-size:100%; text-decoration:underline; }
+.popup .p350 input[type=text]								{ width:340px; }
+.popup .p350 select											{ width:350px; }
+.popup button												{ margin-right:7px; height:23px; color:#4F5660; padding:0 4px; border:1px solid #C7C7C7; background:url(/img/input-bg.png) repeat-x; font-weight:bold; }
+
+/*- Formuláře obecně -*/
+.form p														{ margin:10px 0; padding:0 !important; }
+.form p.last												{ margin-bottom:0; }
+.form input.button, .form select,
+ .form input.text											{ height:23px; color:#4F5660; padding:0 4px; border:1px solid #C7C7C7; background:url(/img/input-bg.png) repeat-x; }
+.form input.text,
+ .form select												{ width:250px; }
+.form select												{ padding-right:0; }
+.form input.button											{ font-weight:bold; }
+.form p.errors												{ color:#d40000; }
+.form .empty												{ border:1px solid #d40000 !important; background:#FFF2F2 !important; }
+
+/*- Bubble Tooltips -*/
+span.tooltip												{ cursor:help; }
+span.tooltip a												{ color:#000; position:relative; }
+span.tooltip .msg											{ display:none; }
+
+.bubble														{ position:absolute; margin-top:-4px; width:231px; z-index:9; }
+.bubble .top, .bubble .bottom								{ height:8px; }
+.bubble.toleft .top											{ background:url(/img/tooltip/l-bubble-top.png) no-repeat; }
+.bubble.toright .top										{ background:url(/img/tooltip/r-bubble-top.png) no-repeat; }
+.bubble.toleft .middle										{ background:url(/img/tooltip/l-bubble-middle.png) left center no-repeat; }
+.bubble.toright .middle										{ background:url(/img/tooltip/r-bubble-middle.png) left center no-repeat; }
+.bubble .middle p											{ margin:0; font-size:100%; word-wrap:break-word; max-width:180px; _width:180px; padding:6px 15px 6px 34px !important; }
+.bubble.toleft .bottom										{ background:url(/img/tooltip/l-bubble-bottom.png) no-repeat; }
+.bubble.toright .bottom										{ background:url(/img/tooltip/r-bubble-bottom.png) no-repeat; }
+
+/*- Debug -*/
+.phpDebug													{ display:block; color:#000; overflow:auto; overflow-x:hidden; }

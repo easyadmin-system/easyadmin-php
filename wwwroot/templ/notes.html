@@ -1,0 +1,67 @@
+<?php include "_doctype.html";?>
+<?php $__section = "account";?>
+<?php $__page = "notes";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title>Poznámky | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="notes">
+		<div id="container">
+			<?php include "templ/sidebar/_account.html";?>
+
+			<div class="wrap">
+				<form method="post" id="notesForm" action="/notes?action=save">
+					<div class="title">
+						<h1>Moje poznámky</h1>
+						<ul class="buttons">
+							<li><a id="save" href="#">Uložit změny</a></li>
+						</ul>
+					</div>
+
+					<div class="subtitle">
+					</div>
+
+					<div class="content">
+						<!-- Hlášky -->
+						<?php if ($actions["action"] == "save"):?>
+							<div class="notice">
+								<?php if ($actions["status"] == 1):?>
+									<div class="window success">
+										<h2>Změny byly uloženy.</h2>
+									</div>
+								<?php else:?>
+									<div class="window error">
+										<h2>Změny se bohužel nepodařilo uložit.</h2>
+									</div>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+
+						<!-- Formulář -->
+						<p class="textfield"><textarea name="notes" rows="25" cols="100"><?php echo $notes;?></textarea></p>
+					</div>
+				</form>
+
+				<!-- Odeslání formuláře -->
+				<script type="text/javascript">
+					var submit = new Submiter(
+						"notesForm",
+						"save"
+					);
+				</script>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<?php include "_doctype.html";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<div class="page" id="notice">
+		<div class="blueBox">
+			<div class="notice">
+				<?php if ($status == 500):?>
+					<!-- Interní chyba systému -->
+					<div class="window error">
+						<h1>Interní chyba systému</h1>
+						<p>Prosím zkuste opakovat akci později nebo kontaktujte technickou podporu.</p>
+					</div>
+				<?php elseif ($status == -1):?>
+					<div class="window info">
+						<h1>Byl(a) jste úspěšně odhlášen(a)</h1>
+						<p>Pro další práci se systémem je třeba se <a href="/">znovu přihlásit</a>.</p>
+					</div>
+				<?php elseif ($status == 403):?>
+					<div class="window warning">
+						<h1>Chyba 403</h1>
+						<p>Systém byl dočasně uzamčen někým z hlavních administrátorů.</p>
+					</div>
+				<?php elseif ($status == 404):?>
+					<div class="window warning">
+						<h1>Chyba 404</h1>
+						<p>Tato stránka neexistuje.</p>
+					</div>
+				<?php endif;?>
+			</div>
+
+			<ul class="bottomMenu">
+				<p>Jaké jsou další možnosti?</p>
+				<li><a href="<?php echo $_SERVER["HTTP_REFERER"];?>">Opakovat akci</a></li>
+				<li><a href="/logout">Přejít na přihlašovací stránku</a></li>
+				<li><a href="mailto:<?php echo $dict["adminEmail"]; ?>">Kontaktovat administrátora webu</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

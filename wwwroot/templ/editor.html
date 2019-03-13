@@ -1,0 +1,287 @@
+<?php include "_doctype.html";?>
+<?php $__section = "content";?>
+<?php $__page = $page;?>
+<?php $sel = ' selected="selected"';?>
+<?php $__title = "Editor";?>
+
+<?php
+switch ($__page) {
+case "create-page":
+case "edit-page":
+	$__mod = "page";
+	break;
+case "create-article":
+case "edit-article":
+	$__mod = "article";
+	break;
+}
+?>
+
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $__title;?> | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="editor">
+		<div id="container">
+			<?php include "templ/sidebar/_content.html";?>
+
+			<div class="wrap">
+			<?php if ($__page == "create-page"):?>
+				<form method="post" action="/edit-page?action=create" id="form">
+			<?php elseif ($__page == "edit-page"):?>
+				<form method="post" action="/edit-page?action=update&pageId=<?php echo $page_detail["id"];?>" id="form">
+			<?php elseif ($__page == "create-article"):?>
+				<form method="post" action="/edit-article?action=create" id="form">
+			<?php elseif ($__page == "edit-article"):?>
+				<form method="post" action="/edit-article?action=update&articleId=<?php echo $page_detail["id"];?>" id="form">
+			<?php endif;?>
+					<input type="hidden" name="content" id="content" value="" />
+					<div class="title">
+						<h1>
+							<?php if ($__page == "create-page"):?>
+								Vytvořit novou stránku
+							<?php elseif ($__page == "edit-page"):?>
+								Upravit stránku
+							<?php elseif ($__page == "create-article"):?>
+								Napsat nový článek
+							<?php elseif ($__page == "edit-article"):?>
+								Upravit článek
+							<?php else:?>
+								Editor
+							<?php endif;?>
+						</h1>
+						<ul class="buttons">
+							<?php if ($__page == "create-page"):?>
+								<li><a id="save" href="#">Vytvořit stránku</a></li>
+							<?php elseif ($__page == "create-article"):?>
+								<li><a id="save" href="#">Vytvořit článek</a></li>
+							<?php elseif ($__page == "edit-page" or $__page == "edit-article"):?>
+								<li><a id="save" href="#">Uložit změny</a></li>
+							<?php endif;?>
+							<?php if ($__mod == "page"):?>
+								<li><a id="back" href="/pages">Zpět na seznam stránek</a></li>
+							<?php elseif ($__mod == "article"):?>
+								<li><a id="back" href="/articles">Zpět na výpis článků</a></li>
+							<?php endif;?>
+						</ul>
+
+					</div>
+
+					<div class="subtitle">
+						<div class="row">
+							<label for="title">Titulek <?php echo ($__mod == "page" ? "stránky" : "článku");?>:</label>
+							<input type="text" class="textfield" name="title" id="title" value="<?php echo $page_detail["title"];?>" />
+							<?php Dict::helper($dict["pagesSubtitlePageTitle"]);?>
+						</div>
+						<div class="row">
+							<label for="url">URL adresa:</label>
+							<input type="text" class="textfield" name="url" id="url" placeholder="http://" value="<?php echo $page_detail["url"];?>" />
+							<?php Dict::helper($dict["pagesSubtitlePageURL"]);?>
+						</div>
+					</div>
+
+					<div class="content">
+						<!-- Levá část s výpisem stránek -->
+						<div class="leftside">
+							<!-- Hlášky -->
+							<?php if ($actions["action"] == "create" or $actions["action"] == "update"):?>
+								<div class="notice">
+									<?php if ($actions["status"] == 1):?>
+										<div class="window success">
+											<?php if ($__mod == "page"):?>
+												<?php if ($actions["action"] == "create"):?>
+													<h2>Stránka byla úspěšně vytvořena.</h2>
+												<?php elseif ($actions["action"] == "update"):?>
+													<h2>Změny na stránce byly úspěšně uloženy.</h2>
+												<?php endif;?>
+											<?php elseif ($__mod == "article"):?>
+												<?php if ($actions["action"] == "create"):?>
+													<h2>Článek byl úspěšně vytvořen.</h2>
+												<?php elseif ($actions["action"] == "update"):?>
+													<h2>Článek byl úspěšně aktualizován.</h2>
+												<?php endif;?>
+											<?php endif;?>
+										</div>
+									<?php else:?>
+										<div class="window error">
+											<?php if ($actions["errors"]):?>
+												<h2>Došlo k následujícím chybám:</h2>
+												<ul>
+													<?php foreach ($actions["errors"] as $k => $v) { ?>
+														<?php if ($k == "titleIsEmpty" && $v):?>
+															<li>Není vyplněný titulek stránky.</li>
+														<?php endif;?>
+														<?php if ($k == "urlIsEmpty" && $v):?>
+															<li>Není vyplněna URL adresa pro stránku.</li>
+														<?php endif;?>
+														<?php if ($k == "pageIdUndefined" && $v):?>
+															<li>Nastala vnitřní chyba systému. Stránka, kterou se snažíte editovat, neexistuje.</li>
+														<?php endif;?>
+														<?php if ($k == "articleIdUndefined" && $v):?>
+															<li>Nastala vnitřní chyba systému. Článek, který se snažíte editovat, neexistuje.</li>
+														<?php endif;?>
+													<?php } ?>
+												</ul>
+											<?php endif;?>
+											<?php if ($actions["errors"]["internalError"]):?>
+												<h2>Nastala neznámá chyba.</h2>
+												<?php if ($__mod == "page"):?>
+													<?php if ($actions["action"] == "create"):?>
+														<p>Stránku se bohužel nepodařilo vytvořit.</p>
+													<?php elseif ($actions["action"] == "update"):?>
+														<p>Změny na stránce se bohužel nepodařilo uložit.</p>
+													<?php endif;?>
+												<?php elseif ($__mod == "article"):?>
+													<?php if ($actions["action"] == "create"):?>
+														<p>Článek se bohužel nepodařilo vytvořit.</p>
+													<?php elseif ($actions["action"] == "update"):?>
+														<p>Článek se bohužel nepodařilo aktualizovat.</p>
+													<?php endif;?>
+												<?php endif;?>
+											<?php endif;?>
+										</div>
+									<?php endif;?>
+								</div>
+							<?php endif;?>
+
+							<div class="modules" id="modules"></div>
+						</div>
+
+						<!-- Postranní boxy -->
+						<div class="rightside">
+							<!--
+							<div class="titledBox side">
+								<h2>Přidat na stránku</h2>
+								<div class="inside">
+									<ul class="linklist" id="addLinksCont">
+										<li><a href="#" id="add_text" data-type="text">Textový obsah</a></li>
+									</ul>
+								</div>
+							</div>
+							-->
+							<div class="titledBox side">
+								<h2>Nastavení <?php echo ($__mod == "page" ? "stránky" : "článku");?></h2>
+								<div class="inside">
+									<div class="row">
+										<label for="public">Publikovat:</label><br />
+										<select name="public" id="public">
+											<option value="1"<?php echo $page_detail["public"] ? $sel:(($__page == "create-page") or ($__page == "create-article") ? $sel:'');?>>Ano</option>
+											<option value="0"<?php echo $page_detail["public"] ? '':$sel;?>>Ne</option>
+										</select>
+									</div>
+									<?php if ($__mod == "page"):?>
+										<?php if ($user["authority"] > 3):?>
+											<div class="row">
+												<label for="static">Statická stránka:</label><br />
+												<select name="static" id="static">
+													<option value="1"<?php echo $page_detail["static"] ? $sel:'';?>>Ano</option>
+													<option value="0"<?php echo $page_detail["static"] ? '':$sel;?>>Ne</option>
+												</select>
+											</div>
+										<?php else:?>
+											<input type="hidden" name="static" value="1" />
+										<?php endif;?>
+									<?php endif;?>
+									<?php if ($page_detail["publish_date"]):?>
+										<p>
+											<b>Naposledy publikováno:</b><br />
+											<?php echo date("d. m. Y - H:i", $page_detail["publish_date"]);?><br />
+											<!--
+											&raquo; <a href="#">Historie verzí</a>
+											-->
+										</p>
+
+										<div class="row">
+											<h6>Další možnosti:</h6>
+											<ul class="linklist">
+												<?php if ($__mod == "page"):?>
+													<li><a target="_blank" href="<?php echo $web["site_root_url"];?>/<?php echo $page_detail["url"];?>">Zobrazit stránku na webu</a></li>
+												<?php elseif ($__mod == "article"):?>
+													<li><a target="_blank" href="<?php echo $web["site_root_url"];?>/<?php echo $articlesUrl;?>/<?php echo $page_detail["url"];?>">Zobrazit článek na webu</a></li>
+												<?php endif;?>
+											</ul>
+										</div>
+									<?php endif;?>
+								</div>
+							</div>
+							<div class="titledBox side seo">
+								<h2>SEO</h2>
+								<div class="inside">
+									<div class="row">
+										<label for="meta_description">MetaDescription:</label><br />
+										<input type="text" name="meta_description" id="meta_description" value="<?php echo $page_detail["meta_description"];?>" />
+									</div>
+									<div class="row">
+										<label for="keywords">Klíčová slova:</label><br />
+										<input type="text" name="keywords" id="keywords" value="<?php echo $page_detail["keywords"];?>" />
+									</div>
+									<div class="row">
+										<label for="priority">Priorita:</label><br />
+										<select name="priority" id="priority">
+											<?php for ($i=0; $i<10; $i++) { ?>
+												<option value="<?php $pP = Dict::pagePriority($i); echo $pP;?>" <?php echo $page_detail["priority"] == $pP ? 'selected="selected"':'';?>><?php echo $pP?></option>
+											<?php } ?>
+										</select>
+									</div>
+									<div class="row">
+										<label for="edit_frequency">Frekvence úprav:</label><br />
+										<select name="edit_frequency" id="edit_frequency">
+											<?php for ($i=0; $i<6; $i++) { ?>
+												<option value="<?php $chF = Dict::changeFreq($i); echo $chF["value"];?>" <?php echo $page_detail["edit_frequency"] == $chF["value"] ? 'selected="selected"':'';?>><?php echo $chF["title"];?></option>
+											<?php } ?>
+										</select>
+									</div>
+									<div class="row">
+										<label for="noindex">Indexovat vyhledávači:</label><br />
+										<select name="noindex" id="noindex">
+											<option value="0" <?php echo $page_detail["noindex"] == 0 ? 'selected="selected"':'';?>>Ano</option>
+											<option value="1" <?php echo $page_detail["noindex"] == 1 ? 'selected="selected"':'';?>>Ne</option>
+										</select>
+									</div>
+									<!--
+									<div class="row">
+										<h6>Další možnosti:</h6>
+										<ul class="linklist">
+											<li><a href="#">Upravit příbuzné stránky</a></li>
+											<li><a href="#">SEO analýza stránky</a></li>
+											<li><a href="#">Vyhledat duplicitní texty</a></li>
+										</ul>
+									</div>
+									-->
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<!-- JS init -->
+	<script type="text/javascript">
+		var content = [{type: "error", position: "0", value: "Bohužel se nepodařil načíst obsah stránky."}];
+		<?php if ($__page == "create-page"):?>
+			content = [{type: "text", position: "0", value: "<p></p>"}];
+		<?php elseif ($__page == "create-article"):?>
+			content = [{type: "text", position: "0", value: "<p></p>"}];
+		<?php elseif ($__page == "edit-page"):?>
+			content = <?php echo $page_detail["content"];?>;
+		<?php elseif ($__page == "edit-article"):?>
+			content = <?php echo $page_detail["content"];?>;
+		<?php endif;?>
+		var modules = new Modules({ tinymceOpt: <?php echo $tinymce_config;?> }, content, designer);
+	</script>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!-- Editace uživatele -->
+<?php if ($actions["errors"]["uidDoesNotExists"] == 1 || $actions["errors"]["emptyUid"]):?>
+	<?php $__errs = 1;?>
+<?php endif;?>
+
+<form action="/members?action=modifyUser" id="editUserForm" method="post">
+	<input type="hidden" name="userId" value="<?php echo $userDetail["id"];?>" />
+	<div class="title">
+		<h1>Editace uživatele <span class="bold"><?php echo $userDetail["username"];?></span></h1>
+		<ul class="buttons">
+			<?php if ($__errs == 1):?>
+				<li><a id="back" href="/members">Zpět na přehled uživatelů</a></li>
+			<?php else:?>
+				<li><a id="save" href="#">Uložit změny</a></li>
+				<?php if ($actions["status"] == 1 && $actions["action"] == "modifyUser"):?>
+					<li><a id="back" href="/members">Zpět na přehled uživatelů</a></li>
+				<?php else:?>
+					<li><a id="cancel" href="/members">Zrušit úpravy</a></li>
+				<?php endif;?>
+			<?php endif;?>
+		</ul>
+	</div>
+
+	<div class="subtitle">
+	</div>
+
+	<div class="content">
+		<div class="leftside">
+			<div class="form">
+				<!-- Chybové hlášky -->
+				<?php if ($actions["action"] == "modifyUser"):?>
+					<div class="notice">
+						<?php if ($actions["status"] == 1):?>
+							<div class="window success">
+								<h2>Úpravy uživatele byly úspěšně provedeny.</h2>
+							</div>
+						<?php else:?>
+							<?php if (!$__errs):?>
+								<div class="window error">
+									<?php if ($actions["errors"]["someValsEmpty"] == 1):?>
+										<h2>Některé z povinných položek nejsou vyplněny.</h2>
+									<?php elseif ($actions["errors"]["uidDoesNotExists"] == 1):?>
+										<h2>Uživatel s tímto ID neexistuje.</h2>
+									<?php elseif ($actions["errors"]["isNotPrivilegedToSuperModifies"] == 1):?>
+										<h2>Nemáte oprávnění k těmto změnám.</h2>
+									<?php elseif ($actions["errors"]["isNotAuthorizedToModifySuperOptions"] == 1):?>
+										<h2>Nemáte oprávnění provádět tyto úpravy u uživatele s vyššími právy, než která máte Vy.</h2>
+									<?php elseif ($actions["errors"]["isNotAuthorizedToElevatePrivileges"] == 1):?>
+										<h2>Nelze změnit oprávnění sám sobě na vyšší.</h2>
+									<?php else:?>
+										<?php echo $dict["internalError"];?>
+									<?php endif;?>
+								</div>
+							<?php endif;?>
+						<?php endif;?>
+					</div>
+				<?php endif;?>
+				<?php if ($__errs == 1):?>
+					<div class="notice">
+						<div class="window error">
+							<h2>Uživatel s tímto ID neexistuje.</h2>
+						</div>
+					</div>
+				<?php else:?>
+
+					<!-- Editační pole -->
+					<p>
+						<label for="username" class="bold">Uživatelské jméno:</label><br />
+						<input type="text" class="text" name="username" id="username" value="<?php echo $userDetail["username"];?>" maxlength="20" />
+						<?php Dict::helper($dict["userNameRulesTooltip"]);?>
+					</p>
+
+					<p>
+						<label for="sex" class="bold">Pohlaví:</label><br />
+						<input type="radio" name="sex" value="0" id="male"<?php echo ($userDetail["sex"] == 0 ? ' checked="checked"' : '');?> /><label for="male">muž</label>
+						<input type="radio" name="sex" value="1" id="female"<?php echo ($userDetail["sex"] == 1 ? ' checked="checked"' : '');?> /><label for="female">žena</label>
+						<input type="radio" name="sex" value="2" id="group"<?php echo ($userDetail["sex"] == 2 ? ' checked="checked"' : '');?> /><label for="group">skupina</label>
+					</p>
+
+					<p>
+						<label for="authority" class="bold">Oprávnění:</label><br />
+						<select name="authority" id="authority">
+							<?php for ($i=0; $i != 6; $i++) { ?>
+								<option value="<?php echo $i;?>"<?php echo ($userDetail["authority"] == $i ? ' selected="selected"' : '');?>><?php Dict::authority($i);?></option>
+							<?php } ?>
+						</select>
+						<?php Dict::helper($dict["userAuthorityTooltip"]);?>
+					</p>
+
+					<p>
+						<label for="allowed" class="bold">Povolen pro přihlášení:</label><br />
+						<input type="radio" name="allowed" value="1" id="allowed"<?php echo ($userDetail["allowed"] == 1 ? ' checked="checked"' : '');?> /><label for="allowed">povolen</label>
+						<input type="radio" name="allowed" value="0" id="notAllowed"<?php echo ($userDetail["allowed"] == 0 ? ' checked="checked"' : '');?> /><label for="notAllowed">zakázán</label>
+					</p>
+
+					<p>
+						<label for="star" class="bold">Hvězdička:</label><br />
+						<select name="star" id="star">
+							<option value="0"<?php echo ($userDetail["star"] == 0 ? ' selected="selected"' : '');?>>žádná hvězdička</option>
+							<option value="1"<?php echo ($userDetail["star"] == 1 ? ' selected="selected"' : '');?>>modrá hvězdička</option>
+							<option value="2"<?php echo ($userDetail["star"] == 2 ? ' selected="selected"' : '');?>>zelená hvězdička</option>
+							<option value="3"<?php echo ($userDetail["star"] == 3 ? ' selected="selected"' : '');?>>žlutá hvězdička</option>
+							<option value="4"<?php echo ($userDetail["star"] == 4 ? ' selected="selected"' : '');?>>červená hvězdička</option>
+							<option value="5"<?php echo ($userDetail["star"] == 5 ? ' selected="selected"' : '');?>>černá hvězdička</option>
+							<option value="6"<?php echo ($userDetail["star"] == 6 ? ' selected="selected"' : '');?>>růžová hvězdička</option>
+							<option value="7"<?php echo ($userDetail["star"] == 7 ? ' selected="selected"' : '');?>>oranžová hvězdička</option>
+						</select>
+						<?php Dict::helper($dict["userStarTooltip"]);?>
+					</p>
+
+					<p>
+						<label for="email" class="bold">E-mail:</label><br />
+						<input type="text" class="text" name="email" id="email" value="<?php echo $userDetail["email"];?>" maxlength="255" />
+						<?php Dict::helper($dict["userEmailTooltip"]);?>
+					</p>
+
+					<!-- Odeslání formuláře -->
+					<script type="text/javascript">
+						var submit = new Submiter(
+							"editUserForm",
+							"save"
+						);
+					</script>
+				<?php endif;?>
+			</div>
+		</div>
+
+		<div class="rightside">
+			<div class="titledBox side">
+				<h2>Možnosti</h2>
+				<div class="inside">
+					<ul class="linklist">
+						<li><a href="/members?userId=<?php echo $userDetail["id"];?>&amp;action=newPass">Nastavit nové heslo</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,19 @@
+<div class="sidebar">
+	<ul>
+		<h5 class="pages"><a href="/pages">Stránky</a></h5>
+		<?php foreach ($pages as $k => $v) { ?>
+			<li<?php if ($__page == "edit-page" && $page_detail["id"] == $v["id"]) echo ' class="actived"';?>>
+				<a class="page-edit" href="/edit-page?action=edit&amp;pageId=<?php echo $v["id"];?>">
+					<?php echo Dict::short($v["title"], 25);?>
+				</a>
+			</li>
+		<?php } ?>
+		<li<?php if ($__page == "pages") echo ' class="actived"';?>><a class="pages" href="/pages">Seznam stránek</a></li>
+		<li<?php if ($__page == "create-page") echo ' class="actived"';?>><a class="create-page" id="create-page" href="/create-page">Vytvořit novou stránku</a></li>
+	</ul>
+	<ul>
+		<h5 class="articles"><a href="/articles">Články</a></h5>
+		<li<?php if ($__page == "articles") echo ' class="actived"';?>><a class="sections" href="/articles">Procházet články</a></li>
+		<li<?php if ($__page == "create-article") echo ' class="actived"';?>><a class="create-article" id="create-article" href="/create-article">Napsat nový článek</a></li>
+	</ul>
+</div>

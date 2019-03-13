@@ -1,0 +1,137 @@
+<!-- Levá strana -->
+<div class="leftside">
+	<!-- Hlášky -->
+	<?php $__action = $actions["action"];?>
+	<?php if ($__action == "addMember"):?>
+		<div class="notice">
+			<?php if ($actions["status"] == 200):?>
+				<div class="window success">
+					<h2>Uživatel byl úspěšně přidán do skupiny.</h2>
+				</div>
+			<?php else:?>
+				<div class="window error">
+					<h2>Uživatele se bohužel nepodařilo do skupiny přidat.</h2>
+					<p>Zkuste zkontrolovat, zda-li se již ve skupině nenachází.</p>
+				</div>
+			<?php endif;?>
+		</div>
+	<?php endif;?>
+	<?php if ($__action == "removeMember"):?>
+		<div class="notice">
+			<?php if ($actions["status"] == 200):?>
+				<div class="window success">
+					<h2>Uživatel byl úspěšně odebrán ze skupiny.</h2>
+				</div>
+			<?php else:?>
+				<div class="window error">
+					<h2>Uživatele se bohužel nepodařilo odebrat ze skupiny.</h2>
+				</div>
+			<?php endif;?>
+		</div>
+	<?php endif;?>
+	<?php if ($__action == "setAdmin" or $__action == "unsetAdmin"):?>
+		<div class="notice">
+			<?php if ($actions["status"] == 200):?>
+				<div class="window success">
+					<h2>Oprávnění správce bylo úspěšně nastaveno.</h2>
+				</div>
+			<?php else:?>
+				<div class="window error">
+					<h2>Oprávnění správce se bohužel nepodařilo nastavit.</h2>
+				</div>
+			<?php endif;?>
+		</div>
+	<?php endif;?>
+
+	<!-- Výpis členů -->
+	<div class="titledBox" id="memberList">
+		<h2>Seznam členů skupiny <?php echo $groupDetail["name"];?></h2>
+
+		<?php if (!$groupDetail["totalMembers"]):?>
+			<p>Tato skupina zatím nemá žádné členy.</p>
+		<?php else:?>
+			<table class="itemList">
+				<thead>
+					<tr>
+						<th>Uživatelské jméno</th>
+						<th>Akce</th>
+					</tr>
+				</thead>
+				<?php foreach ($data["members"] as $key => $val) { ?>
+					<tr<?php if (($key % 2) != 0) echo ' class="even"';?>>
+						<!-- Člen -->
+						<td class="leftalign">
+							<a href="/profile?user=<?php echo $val["username"];?>">
+								<?php echo $val["username"];?>
+							</a>
+						</td>
+
+						<!-- Akce -->
+						<td class="centeralign">
+							<?php if ($isGroupAuthorizedAdmin):?>
+								<?php if ($val["admin"]):?>
+									<a class="icon16 unset-admin" title="Odebrat práva správce" href="/groups?action=unsetAdmin&amp;groupId=<?php echo $__groupId;?>&amp;uid=<?php echo $val["uid"];?>"></a>
+								<?php else:?>
+									<a class="icon16 set-admin" title="Udělit práva správce" href="/groups?action=setAdmin&amp;groupId=<?php echo $__groupId;?>&amp;uid=<?php echo $val["uid"];?>"></a>
+								<?php endif;?>
+
+								<a href="/groups?action=removeMember&amp;groupId=<?php echo $__groupId;?>&amp;uid=<?php echo $val["uid"];?>" class="remove-member"><img src="/img/ico/ico-delete.png" alt="Odebrat člena <?php echo $val["username"];?>" title="Odebrat člena <?php echo $val["username"];?>" /></a>
+							<?php else:?>
+								<?php if ($val["admin"]):?>
+									<img src="/img/ico/ico-groupadmin-active.png" alt="Správce skupiny" title="Správce skupiny" />
+								<?php else:?>
+									<img src="/img/ico/ico-groupadmin-grey.png" alt="Člen skupiny bez oprávnění" title="Člen skupiny bez oprávnění" />
+								<?php endif;?>
+							<?php endif;?>
+						</td>
+					</tr>
+				<?php } ?>
+
+			</table> 
+		<?php endif;?>
+	</div>
+	<script type="text/javascript">
+		var memberList = new Groups.MemberList();
+	</script>
+</div>
+
+<!-- Sidebox -->
+<div class="rightside">
+	<div class="titledBox side">
+		<h2>Možnosti</h2>
+		<div class="inside">
+			<ul class="linklist">
+				<?php if ($isGroupAuthorizedAdmin):?>
+					<li><a href="#" id="addMemberButt">Přidat člena</a></li>
+				<?php endif;?>
+				<li><a href="/groups">Zpět na přehled skupin</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+<!-- JS Popup pro přidání člena skupiny -->
+<div id="addMemberWin" class="popup displaynopopup">
+	<h4>Přidat člena do skupiny</h4>
+
+	<div class="form p350">
+		<form action="/groups?action=addMember&groupId=<?php echo $groupDetail["id"];?>" method="post">
+			<p>
+				<label for="user_id" class="bold">Uživatel:</label><br />
+				<select name="user_id" id="username">
+					<?php foreach ($nonMembers as $key => $val) { ?>
+						<option value="<?php echo $val["uid"];?>"><?php echo $val["username"];?></option>
+					<?php } ?>
+				</select>
+			</p>
+
+			<p class="last">
+				<input type="submit" name="submit-button" class="button" value="Přidat člena" />
+			</p>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	var addMember = new Popup({openOnRefresh: false, callElm: ["addMemberButt"], popUpContent: "addMemberWin"});
+</script>

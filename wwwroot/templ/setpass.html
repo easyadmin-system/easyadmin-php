@@ -1,0 +1,101 @@
+<?php include "_doctype.html";?>
+<?php $__section = "account";?>
+<?php $__page = "setpass";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title>Nastavení | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="overview">
+		<div id="container">
+			<?php include "templ/sidebar/_account.html";?>
+
+			<div class="wrap">
+
+				<form action="/setpass?action=changePass" id="editUserForm" method="post">
+					<input type="hidden" name="userId" value="<?php echo $userDetail["id"];?>" />
+					<div class="title">
+						<h1>Změna hesla</h1>
+						<ul class="buttons">
+							<li><a id="save" href="#">Uložit nové heslo</a></li>
+						</ul>
+					</div>
+
+					<div class="subtitle">
+					</div>
+
+					<div class="content">
+						<div class="leftside">
+							<div class="form">
+								<!-- Chybové hlášky -->
+								<?php if ($actions["action"] == "changePass"):?>
+									<div class="notice">
+										<?php if ($actions["status"] == 1):?>
+											<div class="window success">
+												<h2>Nastavení bylo úspěšně uloženo.</h2>
+											</div>
+										<?php else:?>
+											<div class="window error">
+												<?php if ($actions["errors"]["notSame"] == 1):?>
+													<h2>Zadaná hesla se neshodují.</h2>
+												<?php elseif ($actions["errors"]["passLength"] == 1):?>
+													<h2>Minimální požadovaná délka hesla je 5 znaků.</h2>
+												<?php else:?>
+													<?php echo $dict["internalError"];?>
+												<?php endif;?>
+											</div>
+										<?php endif;?>
+									</div>
+								<?php endif;?>
+
+								<!-- Editační pole -->
+								<p>
+									<label for="password" class="bold">Nové heslo:</label><br />
+									<input type="password" class="text" name="password" id="password" value="" maxlength="" />
+									<?php Dict::helper($dict["pass"]);?>
+								</p>
+
+								<p>
+									<label for="password2" class="bold">Nové heslo znovu:</label><br />
+									<input type="password" class="text" name="password2" id="password2" value="" maxlength="" />
+									<?php Dict::helper($dict["pass2"]);?>
+								</p>
+
+								<!-- Odeslání formuláře -->
+								<script type="text/javascript">
+									var submit = new Submiter(
+										"editUserForm",
+										"save"
+									);
+								</script>
+							</div>
+						</div>
+
+						<div class="rightside">
+							<div class="titledBox side">
+								<h2>Možnosti</h2>
+								<div class="inside">
+									<ul class="linklist">
+										<li><a href="/settings">Zpět na nastavení</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<?php include "_doctype.html";?>
+<?php $__section = "account";?>
+<?php $__page = "settings";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title>Nastavení | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="overview">
+		<div id="container">
+			<?php include "templ/sidebar/_account.html";?>
+
+			<div class="wrap">
+
+				<form action="/settings?action=save" id="editUserForm" method="post">
+					<div class="title">
+						<h1>Nastavení účtu</h1>
+						<ul class="buttons">
+							<li><a id="save" href="#">Uložit nastavení</a></li>
+						</ul>
+					</div>
+
+					<div class="subtitle">
+					</div>
+
+					<div class="content">
+						<div class="leftside">
+							<div class="form">
+								<!-- Chybové hlášky -->
+								<?php if ($actions["action"] == "save"):?>
+									<div class="notice">
+										<?php if ($actions["status"] == 1):?>
+											<div class="window success">
+												<h2>Nastavení bylo úspěšně uloženo.</h2>
+											</div>
+										<?php else:?>
+											<div class="window error">
+												<?php if ($actions["errors"]["someValsEmpty"] == 1):?>
+													<h2>Některé z povinných položek nejsou vyplněny.</h2>
+												<?php elseif ($actions["errors"]["notSameUserName"] == 1):?>
+													<h2>Nelze změnit uživatelské jméno.</h2>
+													<p>Lze měnit pouze velikost písmen v něm.</p>
+												<?php else:?>
+													<?php echo $dict["internalError"];?>
+												<?php endif;?>
+											</div>
+										<?php endif;?>
+									</div>
+								<?php endif;?>
+
+								<!-- Editační pole -->
+								<p>
+									<label for="username" class="bold">Velikost písmen v uživatelském jméně:</label><br />
+									<input type="text" class="text" name="username" id="username" value="<?php echo $userDetail["username"];?>" maxlength="20" />
+									<?php Dict::helper($dict["userNameRulesTooltip"]);?>
+								</p>
+
+								<p>
+									<label for="security_level" class="bold">Úroveň zabezpečení:</label><br />
+									<input type="radio" name="security_level" value="0" id="low"<?php echo ($userDetail["security_level"] == 0 ? ' checked="checked"' : '');?> /><label for="low">nízké</label>
+									<input type="radio" name="security_level" value="1" id="normal"<?php echo ($userDetail["security_level"] == 1 ? ' checked="checked"' : '');?> /><label for="normal">normální</label>
+									<input type="radio" name="security_level" value="2" id="high"<?php echo ($userDetail["security_level"] == 2 ? ' checked="checked"' : '');?> /><label for="high">vysoké</label>
+								</p>
+
+								<p>
+									<label for="loginscreen" class="bold">Informativní obrazovka po přihlášení:</label><br />
+									<input type="radio" name="loginscreen" value="1" id="loginyes"<?php echo ($userDetail["loginscreen"] == 1 ? ' checked="checked"' : '');?> /><label for="loginyes">Používat</label>
+									<input type="radio" name="loginscreen" value="0" id="loginno"<?php echo ($userDetail["loginscreen"] == 0 ? ' checked="checked"' : '');?> /><label for="loginno">Nepoužívat</label>
+								</p>
+
+								<p>
+									<label for="editor" class="bold">WYSIWYG editor:</label><br />
+									<select name="editor" id="editor">
+										<option value="0"<?php echo ($userDetail["editor"] == 0 ? ' selected="selected"' : '');?>>žádný</option>
+										<option value="1"<?php echo ($userDetail["editor"] == 1 ? ' selected="selected"' : '');?>>TinyMCE</option>
+									</select>
+									<?php Dict::helper($dict["wysiwygEditorTooltip"]);?>
+								</p>
+
+								<p>
+									<label for="email" class="bold">E-mail:</label><br />
+									<input type="text" class="text" name="email" id="email" value="<?php echo $userDetail["email"];?>" maxlength="255" />
+									<?php Dict::helper($dict["userEmailTooltip"]);?>
+								</p>
+
+								<!-- Odeslání formuláře -->
+								<script type="text/javascript">
+									var submit = new Submiter(
+										"editUserForm",
+										"save"
+									);
+								</script>
+							</div>
+						</div>
+
+						<div class="rightside">
+							<div class="titledBox side">
+								<h2>Možnosti</h2>
+								<div class="inside">
+									<ul class="linklist">
+										<li><a href="/setpass">Nastavit nové heslo</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

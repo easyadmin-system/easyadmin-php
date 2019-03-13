@@ -1,0 +1,19 @@
+<div class="head">
+	<div class="inside">
+		<p class="logo">
+			<a href="/"><img src="/img/toplogo.png" alt="Logo" /></a>
+		</p>
+
+		<p class="topline">
+			Přihlášen: <b><?php echo $user["username"];?></b> | <a href="/notes">Poznámky</a> | <a href="/settings">Nastavení účtu</a> | <a href="/logout">Odhlásit se</a> | <a href="<?php echo $web["site_root_url"];?>" target="_blank">Zobrazit web</a>
+		</p>
+
+		<ul class="topnav">
+			<li class="overview<?php if ($__section == "overview") echo " actived";?>"><a href="/overview">Přehled</a></li>
+			<li class="content<?php if ($__section == "content") echo " actived";?>"><a href="/content">Obsah</a></li>
+			<li class="configuration<?php if ($__section == "configuration") echo " actived";?>"><a href="/configuration">Konfigurace</a></li>
+			<!--<li class="statistics<?php if ($__section == "statistics") echo " actived";?>"><a href="/statistics">Statistiky</a></li>-->
+			<li class="help<?php if ($__section == "help") echo " actived";?>"><a href="/help">Pomoc</a></li>
+		</ul>
+	</div>
+</div>

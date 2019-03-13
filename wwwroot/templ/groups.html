@@ -1,0 +1,54 @@
+<?php include "_doctype.html";?>
+<?php $__section = "configuration";?>
+<?php $__page = "groups";?>
+<?php $__title = "Správa skupin";?>
+<?php $__groupId = $groupDetail["id"];?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $__title;?> | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="groups">
+		<div id="container">
+			<?php include "templ/sidebar/_configuration.html";?>
+
+			<div class="wrap">
+				<div class="title">
+					<h1><?php echo $__title;?></h1>
+				</div>
+
+				<div class="subtitle">
+					
+				</div>
+
+				<div class="content">
+					<?php if ($groupDoesNotExist):?>
+						<div class="notice">
+							<div class="window error">
+								<h2>Tato skupina neexistuje.</h2>
+							</div>
+						</div>
+					<?php else:?>
+						<?php $__action = $actions["action"];?>
+						<?php if ($__action == "createGroup" or $__action == "removeGroup" or !$__action):?>
+							<?php include("templ/groups/_groups_list.html");?>
+						<?php elseif ($__action == "editGroup" or $__action == "memberList" or $__action == "addMember" or $__action == "removeMember" or $__action == "setAdmin" or $__action == "unsetAdmin"):?>
+							<?php include("templ/groups/_groups_group_detail.html");?>
+						<?php endif;?>
+					<?php endif;?>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

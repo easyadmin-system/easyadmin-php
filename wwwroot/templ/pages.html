@@ -1,0 +1,150 @@
+<?php include "_doctype.html";?>
+<?php $__section = "content";?>
+<?php $__page = "pages";?>
+<?php $__title = "Stránky";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $__title;?> | <?php echo $system["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="pages">
+		<div id="container">
+			<?php include "templ/sidebar/_content.html";?>
+
+			<div class="wrap">
+				<div class="title">
+					<h1><?php echo $__title;?></h1>
+				</div>
+
+				<!--
+				<div class="subtitle">
+					<form method="get" action="/pages">
+						<div class="row">
+							<label for="searchfield">Hledat stránku:</label>
+							<input type="text" class="textfield" name="search" id="searchfield" />
+							<input type="submit" class="button" value="Vyhledat" />
+							<?php Dict::helper($dict["pagesSubtitleSearchTT"]);?>
+						</div>
+					</form>
+				</div>
+				-->
+
+				<div class="content">
+					<!-- Levá část s výpisem stránek -->
+					<div class="leftside">
+						<!-- Hlášky -->
+						<?php if ($actions["action"] == "delete"):?>
+							<div class="notice">
+								<?php if ($actions["status"]):?>
+									<div class="window success">
+										<h2>Stránka byla úspěšně smazána.</h2>
+									</div>
+								<?php else:?>
+									<div class="window error">
+										<h2>Stránku se bohužel nepodařilo smazat.</h2>
+									</div>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+
+						<?php if ($pages):?>
+							<div class="titledBox">
+								<h2>Seznam stránek</h2>
+								<table class="itemList">
+									<thead>
+										<tr>
+											<th>Titulek</th>
+											<th>URL adresa</th>
+											<th>Publikováno</th>
+											<th>Akce</th>
+										</tr>
+									</thead>
+									<?php foreach ($pages as $k => $v) { ?>
+										<tr<?php if (($k % 2) != 0) echo ' class="even"';?>>
+											<td class="leftalign">
+												<!-- Titulek -->
+												<a href="/edit-page?action=edit&amp;pageId=<?php echo $v["id"];?>">
+													<?php echo $v["title"];?>
+												</a>
+											</td>
+
+											<!-- URL adresa -->
+											<td class="leftalign">
+												<a href="<?php echo $web["site_root_url"];?>/<?php echo $v["url"];?>">
+													<?php echo $v["url"];?>
+												</a>
+											</td>
+
+											<!-- Publikováno -->
+											<td class="centeralign"><?php echo $v["public"] ? "ano" : "ne";?></td>
+
+											<!-- Akce -->
+											<td class="centeralign actions">
+												<a href="<?php echo $web["site_root_url"];?>/<?php echo $v["url"];?>">
+													<img src="/img/ico/ico-view.png" alt="Zobrazit na webu" title="Zobrazit na webu" />
+												</a>
+												<a href="/edit-page?action=edit&amp;pageId=<?php echo $v["id"];?>">
+													<img src="/img/ico/ico-edit.png" alt="Upravit stránku" title="Upravit stránku" />
+												</a>
+												<a href="/delete-page?pageId=<?php echo $v["id"];?>" class="delete-page">
+													<img src="/img/ico/ico-delete.png" alt="Smazat stránku" title="Smazat stránku" />
+												</a>
+											</td>
+										</tr>
+									<?php } ?>
+
+								</table> 
+							</div>
+						<?php endif;?>
+					</div>
+
+					<!-- Postranní boxy -->
+					<div class="rightside">
+						<div class="titledBox side">
+							<h2>Možnosti</h2>
+							<div class="inside">
+								<ul class="linklist">
+									<li><a href="/create-page">Vytvořit novou stránku</a></li>
+								</ul>
+							</div>
+						</div>
+						<!--
+						<div class="titledBox side">
+							<h2>Filtr zobrazení</h2>
+							<div class="inside">
+								<form method="get" action="/pages">
+									<div class="row">
+										<label for="filter">Zobrazit:</label>
+										<select name="filter" id="filter">
+											<option value="0">Všechny</option>
+											<option value="1">Pouze publikované</option>
+											<option value="2">Pouze nepublikované</option>
+										</select>
+									</div>
+								</form>
+							</div>
+						</div>
+						-->
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<!-- JavaScripty -->
+	<script type="text/javascript">
+		var pages = new Pages.PageList();
+	</script>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<div class="sidebar">
+	<ul>
+		<h5 class="account"><a href="/users/<?php echo $user['username'];?>">Můj účet</a></h5>
+		<li<?php if ($__page == "settings") echo ' class="actived"';?>><a class="settings" href="/settings">Nastavení účtu</a></li>
+		<li<?php if ($__page == "setpass") echo ' class="actived"';?>><a class="setpass" href="/setpass">Změna hesla</a></li>
+		<li<?php if ($__page == "notes") echo ' class="actived"';?>><a class="notes" href="/notes">Poznámky</a></li>
+	</ul>
+
+	<!--
+	<ul>
+		<h5 class="my-records"><a href="/records?username=<?php echo $user['username'];?>">Moje záznamy</a></h5>
+		<li<?php if ($__page == "logins") echo 'class="actived"';?>><a class="logins" href="/logins?username=<?php echo $user['username'];?>">Přístupy do systému</a></li>
+		<li<?php if ($__page == "log") echo 'class="actived"';?>><a class="log" href="/log?username=<?php echo $user['username'];?>">Historie operací</a></li>
+	</ul>
+	-->
+</div>
