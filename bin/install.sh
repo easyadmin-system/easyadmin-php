@@ -6,7 +6,7 @@
 # Basic variables
 HOST=$(cat /etc/hostname)
 read -p "Project name: " PROJECT
-read -p "Your e-mail: " EMAIL
+read -p "Domain: " DOMAIN
 TARGET=/home/$USER/www/$PROJECT
 SOURCE=$(readlink -f $(dirname $(readlink -f ${BASH_SOURCE[0]}))"/..")
 
@@ -39,14 +39,13 @@ CONFIG_FILES="$SOURCE/conf/virtualhost.dev.conf"
 for CFG in $CONFIG_FILES; do
 	sed -e "s,__PROJECT__,$PROJECT," \
 		-e "s,__TARGET__,$TARGET," \
-		-e "s,__HOST__,$HOST," \
-		-e "s,__EMAIL__,$EMAIL," \
+		-e "s,__DOMAIN__,$DOMAIN," \
 		$CFG > $TARGET/conf/$(basename $CFG)
 done
 
 # Virtual host
 echo "Creating virtualhost..."
-ln -s $TARGET/conf/virtualhost.dev.conf /home/$USER/vhosts/$PROJECT.conf
+ln -s $TARGET/conf/virtualhost.dev.conf /home/$USER/vhosts/apache2/$PROJECT.conf
 
 # Finish
 echo "Installation complete."
