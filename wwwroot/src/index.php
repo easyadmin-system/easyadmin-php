@@ -13,8 +13,8 @@ require_once("src/lib/sysconfig.php");
 require_once("src/lib/notes.php");
 
 # Konfigurace
-require_once("config/templates.conf");
-require_once("config/application.conf");
+require_once("../conf/templates.config.php");
+require_once("../conf/application.config.php");
 require_once("src/vars.php");
 require_once("src/configinit.php");
 

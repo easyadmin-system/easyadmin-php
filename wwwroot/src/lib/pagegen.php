@@ -1,60 +1,62 @@
 <?php
 /**
  * @name pagegen
- * @version 1.4
- * @description Generátor jednoduchých PHP šablon
+ * @version 1.7
+ * @description Simple PHP template generator
  * @depends dbglog (>= 1.0)
  * @branch testing
 **/
-@include_once("src/dict/templdict.php");
+
+# Absolute path for file with template functions (optional)
+if (apache_getenv('TEMPL_FUNC_FILE')) {
+	@include_once(require_once(apache_getenv('TEMPL_FUNC_FILE')));
+}
 
 /**
  * Constructor
- * @param {string} filename Název souboru, ze kterého budeme šablonou generovat
- * @param {array} data Výstupní data do šablon
- * @param {array} config Objekt s konfigurací
- * @param {array} config {string} templPath Cesta k souborům s šablonama (výchozí hodnota "templ/")
- * @param {array} config {string} configPath Cesta k souborům s konfiguračníma souborama (výchozí hodnota "config/")
- * @param {array} config {string} file Název souboru s šablonou
- * @param {array} config {string} content_type Content type souboru s šablonou (výchozí hodnota "text/html")
- * @param {array} config {string} dict Soubor se slovníkem (výchozí hodnota "dictionary.conf")
- * @param {array} config {string} config Soubor k obecným konfiguracím šablon (výchozí hodnota "templates.conf")
+ * @param {string} filename Path to template file (*.html, *.json etc.)
+ * @param {array} data Input data
+ * @param {array} config Configuration object
+ * @param {array} config {string} templPath Templates directory path (default: "templ/")
+ * @param {array} config {string} content_type Content type (default: "text/html")
+ * @param {array} config {boolean} debug Debug mode
  **/
 class Pagegen
 {
 	function Pagegen($filename, $data, $conf = array()) {
-		# Převedeme proměnné z pole do stromu
+		# Generate data template structure
 		if (is_array($data)) {
 			foreach ($data as $index => $value) {
-				$$index = $value;
+				$$index = $value; // Two dollars variable set
 			}
 		} else {
 			Dbg::log("Error: Data structure for template is not an array");
 		}
 
-		# Výchozí volby konfigurace
+		# Default configuration options
 		if (!isset($conf["content_type"])) $conf["content_type"] = "text/html";
-		if (!isset($conf["dict"])) $conf["dict"] = "dictionary.dict";
-		if (!isset($conf["config"])) $conf["config"] = "templates.conf";
 		if (!isset($conf["templPath"])) $conf["templPath"] = "templ/";
-		if (!isset($conf["configPath"])) $conf["configPath"] = "config/";
 
-		# Načteme konfiguraci pro šablony
-		include($conf["configPath"].$conf["dict"]);
-		include($conf["configPath"].$conf["config"]);
-		@include("src/vars.php");
+		# Template content type
+		if (!isset($conf["debug"])) {
+			header(sprintf("Content-type: %s", $conf["content_type"]));
+		}
 
-		# Určíme content type pro šablonu
-		header(sprintf("Content-type: %s", $conf["content_type"]));
-
-		# Použijeme soubor s šablonou
+		# Get template file
 		$debug["templateSource"] = $filename;
 		$debug["content_type"] = $conf["content_type"];
-		$templFile = $conf["templPath"].$filename;
-		if (file_exists($templFile)) {
-			require_once($templFile);
+
+		if (!isset($conf["debug"])) {
+			$templateFile = $conf["templPath"].$filename;
 		} else {
-			Dbg::log("Error: Template file ".$templFile." does not exist");
+			$templateFile = $conf["templPath"]."debug.html";
+		}
+
+		# Generate template
+		if (file_exists($templateFile)) {
+			require_once($templateFile);
+		} else {
+			Dbg::log("Error: Template file ".$templateFile." does not exist");
 		}
 		exit;
 	}
