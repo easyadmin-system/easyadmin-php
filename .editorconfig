@@ -8,9 +8,12 @@ root = true
 end_of_line = lf
 insert_final_newline = true
 
-# Matches multiple files with brace expansion notation
-# Set default charset
-[*.{html,css,js,php,conf}]
+[*.{html,css,js,php}]
 charset = utf-8
 indent_style = tab
+indent_size = 4
+
+[*.{conf}]
+charset = utf-8
+indent_style = space
 indent_size = 4
