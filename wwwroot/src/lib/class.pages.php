@@ -4,7 +4,8 @@ class Pages
 	/**
 	 * Conscructor
 	 */
-	function Pages($selfAuthority, $selfUid) {
+	function __construct($mysql, $selfAuthority, $selfUid) {
+		$this->mysql = $mysql;
 		if (!$selfAuthority) return false;
 		if (!$selfUid) return false;
 		$this->selfAuthority = $selfAuthority;
@@ -15,7 +16,7 @@ class Pages
 	 * Smaže stránku
 	 */
 	public function deletePage($pageId) {
-		return MySQL::deleteRow("pages", "id", $pageId);
+		return $this->mysql->deleteRow("pages", "id", $pageId);
 	}
 
 	/**
@@ -38,29 +39,29 @@ class Pages
 		$content = json_decode($page["content"], true);
 		unset($page["content"]);
 
-		if (MySQL::countRows("pages", "url", $page["url"])) {
+		if ($this->mysql->countRows("pages", "url", $page["url"])) {
 			return array("urlAlreadyExists" => 1);
 		}
 
-		if (!MySQL::insertRow("pages", $page)) {
+		if (!$this->mysql->insertRow("pages", $page)) {
 			return array("internalError" => 1);
 		}
 
-		$page = MySQL::selectRow("pages", "url", $page["url"]);
+		$page = $this->mysql->selectRow("pages", "url", $page["url"]);
 		$pageId = $page["id"];
 
 		for ($i=0; count($content)>$i; $i++) {
 			$contentData["page_id"] = $pageId;
 			$contentData["position"] = $content[$i]["position"];
 			$contentData["type"] = $content[$i]["type"];
-			if (!MySQL::insertRow("contents", $contentData)) return array("internalError" => 1);
-			$contentRow = MySQL::selectRow("contents", $contentData);
+			if (!$this->mysql->insertRow("contents", $contentData)) return array("internalError" => 1);
+			$contentRow = $this->mysql->selectRow("contents", $contentData);
 
 			switch ($content[$i]["type"]) {
 				case "text":
 					$textData["content_id"] = $contentRow["id"];
 					$textData["content"] = $content[$i]["value"];
-					if (!MySQL::insertRow("texts", $textData)) return array("internalError" => 1);
+					if (!$this->mysql->insertRow("texts", $textData)) return array("internalError" => 1);
 					break;
 				default:
 					
@@ -89,18 +90,18 @@ class Pages
 
 		if (!$pageUrl && !$pageId) return false;
 		if ($pageUrl) {
-			$page = MySQL::selectRow("pages", "url", $pageUrl);
+			$page = $this->mysql->selectRow("pages", "url", $pageUrl);
 		} else {
-			if ($pageId) $page = MySQL::selectRow("pages", "id", $pageId);
+			if ($pageId) $page = $this->mysql->selectRow("pages", "id", $pageId);
 		}
 		if (!$page) return false;
-		$contents = MySQL::getList(array("id", "type", "position"), "contents", array("page_id" => $page["id"]), array("position"));
+		$contents = $this->mysql->getList(array("id", "type", "position"), "contents", array("page_id" => $page["id"]), array("position"));
 
 		for ($i=0; count($contents)>$i; $i++) {
 			$type = $contents[$i]["type"];
 			switch ($type) {
 				case "text":
-					$text = MySQL::selectRow("texts", "content_id", $contents[$i]["id"]);
+					$text = $this->mysql->selectRow("texts", "content_id", $contents[$i]["id"]);
 					break;
 				default:
 					
@@ -123,7 +124,7 @@ class Pages
 	 * Načte seznam všech stránek
 	 */
 	public function getPageList() {
-		return MySQL::getList(array("id", "url", "public", "title"), "pages", false, array("title"));
+		return $this->mysql->getList(array("id", "url", "public", "title"), "pages", false, array("title"));
 		
 	}
 }

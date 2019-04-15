@@ -1,6 +1,6 @@
 <?php
 # Instance
-$pages = new Pages($authority, $uid);
+$pages = new Pages($mysql, $authority, $uid);
 
 # Data do šablon
 $data["pages"] = $pages->getPageList();

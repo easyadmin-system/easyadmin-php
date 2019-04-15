@@ -4,7 +4,8 @@ class SysConfig
 	/**
 	 * Conscructor
 	 **/
-	function __construct($selfAuthority, $selfUid) {
+	function __construct($mysql, $selfAuthority, $selfUid) {
+		$this->mysql = $mysql;
 		$this->selfAuthority = $selfAuthority;
 		$this->selfUid = $selfUid;
 	}
@@ -12,18 +13,18 @@ class SysConfig
 	/**
 	 * Vrátí hodnoty z databáze
 	 **/
-	function getValues() {
-		return MySQL::getList(array("variable", "value"), "sysconfig");
+	public function getValues() {
+		return $this->mysql->getList(array("variable", "value"), "sysconfig");
 	}
 
 	/**
 	 * Uložení hodnot
 	 **/
-	function saveValues($keys) {
+	public function saveValues($keys) {
 		$validData = FW::validPostData($keys);
 		$err = false;
 		foreach ($validData as $key => $val) {
-			if (!MySQL::updateRow("sysconfig", "variable", $key, array("value" => $val))) {
+			if (!$this->mysql->updateRow("sysconfig", "variable", $key, array("value" => $val))) {
 				$err = true;
 				return false;
 			}
@@ -34,8 +35,8 @@ class SysConfig
 	/**
 	 * Načte konfigurační hodnotu z databáze
 	 **/
-	public static function getValue($key) {
-		$val = MySQL::selectRow("sysconfig", "variable", $key);
+	public function getValue($key) {
+		$val = $this->mysql->selectRow("sysconfig", "variable", $key);
 		if ($val) return $val["value"];
 		return false;
 	}

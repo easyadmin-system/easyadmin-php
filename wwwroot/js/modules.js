@@ -6,7 +6,7 @@ Modules = JAK.ClassMaker.makeClass({
 /**
  * @constructor
  * @overview Stará se o přidávání modulů na stránku
- * @author aionet media, http://www.aionet.cz
+ * @author Jan Elznic, https://www.janelznic.cz
  * @param {object} opt Konfigurační objekt
  */
 Modules.prototype.$constructor = function(opt, content, designer) {

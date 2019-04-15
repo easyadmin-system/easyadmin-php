@@ -1,6 +1,6 @@
 <?php
 # Vytvoříme instanci pro práci s poznámkami
-$notes = new Notes($uid);
+$notes = new Notes($mysql, $uid);
 
 # Nasetujeme předané proměnné
 $action = FW::get("action");
@@ -18,12 +18,14 @@ if ($action == "save") {
 }
 
 # Zobrazení aktuálních poznámek
-list($notes) = mysql_fetch_row(mysql_query(sprintf(
+list($notes) = mysqli_fetch_row(mysqli_query(
+	$mysql->session,
+	sprintf(
 		"select notes from %s_users where id like '%d'",
 		Config::get("mysqlPrefix"),
 		$uid
-	))
-);
+	)
+));
 
 $data["notes"] = $notes;
 

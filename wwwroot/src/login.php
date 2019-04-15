@@ -1,11 +1,12 @@
 <?php
-$name = FW::mres($_POST["username"]);
-$pass = FW::mres($_POST["password"]);
+$name = $mysql->mres($_POST["username"]);
+$pass = $mysql->mres($_POST["password"]);
 $redirectUrl = $_POST["redirectUrl"];
 
 
 # Načteme informace o uživateli
-$request = mysql_query(
+$request = mysqli_query(
+	$mysql->session,
 	sprintf(
 		"select count(id), id, username, pass, authority, allowed, login_count from %s_users where username like '%s'",
 		Config::get("mysqlPrefix"),
@@ -19,7 +20,7 @@ if (!$request) {
 	exit;
 }
 
-list($count, $uid, $username, $password, $authority, $allowed, $login_count) = mysql_fetch_row($request);
+list($count, $uid, $username, $password, $authority, $allowed, $login_count) = mysqli_fetch_row($request);
 
 # Existuje uživatel?
 if ($count < 1) {
@@ -44,7 +45,8 @@ session_start();
 $_SESSION["login"] = $uid;
 
 # Aktualizace informací o uživateli
-$request = mysql_query(
+$request = mysqli_query(
+	$mysql->session,
 	sprintf(
 		"update %s_users set last_login = '%d', last_ip = '%s', login_count = '%d' where id = '%d'",
 		Config::get("mysqlPrefix"), time(), $_SERVER["REMOTE_ADDR"], $login_count++, $uid
@@ -58,7 +60,8 @@ if (!$request) {
 }
 
 # Zaznamenáme přístup do systému
-$request = mysql_query(
+$request = mysqli_query(
+	$mysql->session,
 	sprintf(
 		"insert into %s_user_logins(time, name, ip, httpua) values('%d', '%s', '%s', '%s')",
 		Config::get("mysqlPrefix"),

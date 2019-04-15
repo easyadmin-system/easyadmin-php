@@ -4,7 +4,8 @@ class Notes
 	/**
 	 * Conscructor
 	 **/
-	function notes($selfUid) {
+	function __construct($mysql, $selfUid) {
+		$this->mysql = $mysql;
 		$this->selfUid = $selfUid;
 	}
 
@@ -12,7 +13,8 @@ class Notes
 	 * Uloží poznámky
 	 **/
 	function save($notes) {
-		$request = mysql_query(
+		$request = mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"update %s_users set notes = '%s' where id like '%d'",
 				Config::get("mysqlPrefix"),

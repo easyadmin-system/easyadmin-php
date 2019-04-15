@@ -6,7 +6,7 @@ WYSIWYG = JAK.ClassMaker.makeClass({
 /**
  * @constructor
  * @overview Obstarává wysiwyg editor
- * @author aionet media, http://www.aionet.cz
+ * @author Jan Elznic, https://www.janelznic.cz
  * @param {string} textAreaId Identifikátor textarea elementu, který budeme nahrazovat WYSIWYG editorem
  * @param {object} opt Konfigurační objekt
  */

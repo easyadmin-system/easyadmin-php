@@ -1,7 +1,7 @@
 <?php
 # Instance
-$articles = new Articles($authority, $uid);
-$pages = new Pages($authority, $uid);
+$articles = new Articles($mysql, $authority, $uid);
+$pages = new Pages($mysql, $authority, $uid);
 
 # URL parametry
 $action = FW::get("action");

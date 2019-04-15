@@ -4,7 +4,8 @@ class Articles
 	/**
 	 * Conscructor
 	 */
-	function Articles($selfAuthority, $selfUid) {
+	function __construct($mysql, $selfAuthority, $selfUid) {
+		$this->mysql = $mysql;
 		if (!$selfAuthority) return false;
 		if (!$selfUid) return false;
 		$this->selfAuthority = $selfAuthority;
@@ -15,7 +16,7 @@ class Articles
 	 * Smaže článek
 	 */
 	public function deleteArticle($articleId) {
-		return MySQL::deleteRow("articles", "id", $articleId);
+		return $this->mysql->deleteRow("articles", "id", $articleId);
 	}
 
 	/**
@@ -37,29 +38,29 @@ class Articles
 		$content = json_decode($article["content"], true);
 		unset($article["content"]);
 
-		if (MySQL::countRows("articles", "url", $article["url"])) {
+		if ($this->mysql->countRows("articles", "url", $article["url"])) {
 			return array("urlAlreadyExists" => 1);
 		}
 
-		if (!MySQL::insertRow("articles", $article)) {
+		if (!$this->mysql->insertRow("articles", $article)) {
 			return array("internalError" => 1);
 		}
 
-		$article = MySQL::selectRow("articles", "url", $article["url"]);
+		$article = $this->mysql->selectRow("articles", "url", $article["url"]);
 		$articleId = $article["id"];
 
 		for ($i=0; count($content)>$i; $i++) {
 			$contentData["article_id"] = $articleId;
 			$contentData["position"] = $content[$i]["position"];
 			$contentData["type"] = $content[$i]["type"];
-			if (!MySQL::insertRow("contents", $contentData)) return array("internalError" => 1);
-			$contentRow = MySQL::selectRow("contents", $contentData);
+			if (!$this->mysql->insertRow("contents", $contentData)) return array("internalError" => 1);
+			$contentRow = $this->mysql->selectRow("contents", $contentData);
 
 			switch ($content[$i]["type"]) {
 				case "text":
 					$textData["content_id"] = $contentRow["id"];
 					$textData["content"] = $content[$i]["value"];
-					if (!MySQL::insertRow("texts", $textData)) return array("internalError" => 1);
+					if (!$this->mysql->insertRow("texts", $textData)) return array("internalError" => 1);
 					break;
 				default:
 					
@@ -88,18 +89,18 @@ class Articles
 
 		if (!$articleUrl && !$articleId) return false;
 		if ($articleUrl) {
-			$article = MySQL::selectRow("articles", "url", $articleUrl);
+			$article = $this->mysql->selectRow("articles", "url", $articleUrl);
 		} else {
-			if ($articleId) $article = MySQL::selectRow("articles", "id", $articleId);
+			if ($articleId) $article = $this->mysql->selectRow("articles", "id", $articleId);
 		}
 		if (!$article) return false;
-		$contents = MySQL::getList(array("id", "type", "position"), "contents", array("article_id" => $article["id"]), array("position"));
+		$contents = $this->mysql->getList(array("id", "type", "position"), "contents", array("article_id" => $article["id"]), array("position"));
 
 		for ($i=0; count($contents)>$i; $i++) {
 			$type = $contents[$i]["type"];
 			switch ($type) {
 				case "text":
-					$text = MySQL::selectRow("texts", "content_id", $contents[$i]["id"]);
+					$text = $this->mysql->selectRow("texts", "content_id", $contents[$i]["id"]);
 					break;
 				default:
 					
@@ -122,7 +123,7 @@ class Articles
 	 * Načte seznam všech článků
 	 */
 	public function getArticles() {
-		return MySQL::getList(array("id", "url", "public", "title"), "articles", false, array("title"));
+		return $this->mysql->getList(array("id", "url", "public", "title"), "articles", false, array("title"));
 		
 	}
 }

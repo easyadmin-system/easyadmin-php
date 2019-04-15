@@ -6,7 +6,7 @@ if ($authority < 2) {
 }
 
 # Vytvoříme instanci pro práci s uživateli
-$users = new Users($authority, $uid);
+$users = new Users($mysql, $authority, $uid);
 
 # Akce
 $action = FW::get("action");
@@ -165,7 +165,8 @@ if ($action == "editUser" || $action == "newPass") {
 
 # Zobrazení seznamu uživatelů
 if ($showUserList) {
-	$request = mysql_query(
+	$request = mysqli_query(
+		$mysql->session,
 		sprintf(
 			"select id, username, authority, registration, last_login, sex, star from %s_users order by id",
 			Config::get("mysqlPrefix")
@@ -174,7 +175,7 @@ if ($showUserList) {
 
 	$userList = array();
 	$i=0;
-	while (list($uid, $username, $authority, $registration, $last_login, $sex, $star) = mysql_fetch_row($request)) {
+	while (list($uid, $username, $authority, $registration, $last_login, $sex, $star) = mysqli_fetch_row($request)) {
 		$userList["user"][$i] = array(
 			"uid" => $uid,
 			"username" => $username,

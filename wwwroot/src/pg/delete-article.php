@@ -1,6 +1,6 @@
 <?php
 # Instance
-$articles = new Articles($authority, $uid);
+$articles = new Articles($mysql, $authority, $uid);
 
 # URl parametry
 $articleId = FW::get("articleId");

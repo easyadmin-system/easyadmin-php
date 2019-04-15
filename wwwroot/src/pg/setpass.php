@@ -1,6 +1,6 @@
 <?php
 # Vytvoříme instanci pro práci s uživateli
-$users = new Users($authority, $uid);
+$users = new Users($mysql, $authority, $uid);
 
 # Nasetujeme předané proměnné
 $action = FW::get("action");

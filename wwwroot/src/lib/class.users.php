@@ -4,7 +4,8 @@ class Users
 	/**
 	 * Conscructor
 	 **/
-	function Users($selfAuthority, $selfUid) {
+	function __construct($mysql, $selfAuthority, $selfUid) {
+		$this->mysql = $mysql;
 		$this->selfAuthority = $selfAuthority;
 		$this->selfUid = $selfUid;
 	}
@@ -13,7 +14,8 @@ class Users
 	 * Vrátí úroveň oprávnění
 	 **/
 	function getAuthority($uid) {
-		list($authority) = mysql_fetch_row(mysql_query(
+		list($authority) = mysqli_fetch_row(mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select authority from %s_users where id like '%d'",
 				Config::get("mysqlPrefix"),
@@ -35,7 +37,8 @@ class Users
 		if (sizeof($err) > 0) {
 			return $err;
 		} else {
-			$request = mysql_query(
+			$request = mysqli_query(
+				$this->mysql->session,
 				sprintf(
 					"insert into %s_users (username, pass, authority, allowed, registration, last_login, sex) values ('%s', '%s', '%d', '1', '%d', '%d', '%d')",
 					Config::get("mysqlPrefix"),
@@ -69,7 +72,8 @@ class Users
 	  * Zjištění, zda-li uživatel již existuje
 	  **/
 	function userExists($username) {
-		list($count) = mysql_fetch_row(mysql_query(
+		list($count) = mysqli_fetch_row(mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select count(id) from %s_users where username like '%s'",
 				Config::get("mysqlPrefix"),
@@ -84,7 +88,8 @@ class Users
 	  * Vrátí uživatelské UID podle uživatelského jména
 	  **/
 	function getUidByUserName($username) {
-		list($uid) = mysql_fetch_row(mysql_query(
+		list($uid) = mysqli_fetch_row(mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select id from %s_users where username like '%s'",
 				Config::get("mysqlPrefix"),
@@ -99,7 +104,8 @@ class Users
 	  * Vrátí uživatelské jméno podle UID uživatele
 	  **/
 	function getUserNameByUid($uid) {
-		list($username) = mysql_fetch_row(mysql_query(
+		list($username) = mysqli_fetch_row(mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select username from %s_users where id like '%d'",
 				Config::get("mysqlPrefix"),
@@ -114,7 +120,8 @@ class Users
 	  * Zjištění, zda-li uživatel již existuje podle UID
 	  **/
 	function uidExists($uid) {
-		list($count) = mysql_fetch_row(mysql_query(
+		list($count) = mysqli_fetch_row(mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select count(id) from %s_users where id like '%d'",
 				Config::get("mysqlPrefix"),
@@ -145,7 +152,8 @@ class Users
 		if (sizeof($err) > 0) {
 			return $err;
 		} else {
-			$request = mysql_query(
+			$request = mysqli_query(
+				$this->mysql->session,
 				sprintf(
 					"delete from %s_users where id like '%d'",
 					Config::get("mysqlPrefix"),
@@ -194,7 +202,8 @@ class Users
 	 * Nastaví nové heslo v databázi
 	 **/
 	function updatePass($uid, $pass) {
-		$request = mysql_query(
+		$request = mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"update %s_users set pass = '%s' where id like '%d'",
 				Config::get("mysqlPrefix"),
@@ -258,7 +267,8 @@ class Users
 			$opt .= sprintf("security_level = '%s', ", $newDetails["security_level"]);
 			$opt .= sprintf("loginscreen = '%s', ", $newDetails["loginscreen"]);
 			$opt .= sprintf("editor = '%d'", $newDetails["editor"]);
-			$request = mysql_query(
+			$request = mysqli_query(
+				$this->mysql->session,
 				sprintf(
 					"update %s_users set %s where id like '%d'",
 					Config::get("mysqlPrefix"),
@@ -297,7 +307,8 @@ class Users
 			$opt .= sprintf("sex = '%d', ", $newDetails["sex"]);
 			$opt .= sprintf("star = '%d', ", $newDetails["star"]);
 			$opt .= sprintf("email = '%s'", $newDetails["email"]);
-			$request = mysql_query(
+			$request = mysqli_query(
+				$this->mysql->session,
 				sprintf(
 					"update %s_users set %s where id like '%d'",
 					Config::get("mysqlPrefix"),
@@ -356,7 +367,8 @@ class Users
 	 * Načte informace o uživateli
 	 **/
 	function getUserDetails($uid) {
-		$request = mysql_query(
+		$request = mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select id, username, security_level, authority, allowed, sex, star, email, editor, loginscreen from %s_users where id like '%d'",
 				Config::get("mysqlPrefix"),
@@ -364,7 +376,7 @@ class Users
 			)
 		);
 		if ($request) {
-			$details = mysql_fetch_array($request);
+			$details = mysqli_fetch_array($request);
 
 			$i = 0;
 			foreach ($details as $key => $val) {
@@ -385,7 +397,8 @@ class Users
 	 * Vrátí seznam uživatelů setřízený uživatelského jména
 	 **/
 	function getUserListByUserName() {
-		$request = mysql_query(
+		$request = mysqli_query(
+			$this->mysql->session,
 			sprintf(
 				"select id, username from %s_users order by username",
 				Config::get("mysqlPrefix")
@@ -394,7 +407,7 @@ class Users
 
 		$users = array();
 		$i=0;
-		while (list($id, $username) = mysql_fetch_row($request)) {
+		while (list($id, $username) = mysqli_fetch_row($request)) {
 			$users["user"][$i] = array(
 				"uid" => $id,
 				"username" => $username

@@ -4,7 +4,8 @@ class Groups
 	/**
 	 * Conscructor
 	 */
-	function Groups($selfAuthority, $selfUid, $users) {
+	function __construct($mysql, $selfAuthority, $selfUid, $users) {
+		$this->mysql = $mysql;
 		$this->selfAuthority = $selfAuthority;
 		$this->selfUid = $selfUid;
 		$this->users = $users;
@@ -25,7 +26,7 @@ class Groups
 		if (sizeof($err)) {
 			return $err;
 		} else {
-			if (MySQL::insertRow("groups", array("name" => $name))) {
+			if ($this->mysql->insertRow("groups", array("name" => $name))) {
 				return true;
 			}
 			Dbg::log("Error: Cannot create new group");
@@ -39,30 +40,30 @@ class Groups
 	function removeGroup($groupId) {
 		if ($this->selfAuthority < $this->requiredAuth) return array("insufficientPermissions" => 1);
 		if (!$this->groupIdExists($groupId)) return array("doesNotExist" => 1);
-		return MySQL::deleteRow("groups", "id", $groupId);
+		return $this->mysql->deleteRow("groups", "id", $groupId);
 	}
 
 	/**
 	 * Zjistíme, zda-li již skupina s daným názvem neexistuje
 	 */
 	function groupExists($name) {
-		return MySQL::countRows("groups", "name", $name);
+		return $this->mysql->countRows("groups", "name", $name);
 	}
 
 	/**
 	 * Zjistíme, zda-li již skupina s daným ID neexistuje
 	 */
 	function groupIdExists($groupId) {
-		return MySQL::countRows("groups", "id", $groupId);
+		return $this->mysql->countRows("groups", "id", $groupId);
 	}
 
 	/**
 	 * Načtení abecedního seznamu skupin
 	 */
 	function groupList() {
-		$groups = MySQL::getList(array("id", "name"), "groups", false, array("name"));
+		$groups = $this->mysql->getList(array("id", "name"), "groups", false, array("name"));
 		for ($i=0; count($groups) > $i; $i++) {
-			$groups[$i]["members"] = MySQL::countRows("groups_members", "group_id", $groups[$i]["id"]);
+			$groups[$i]["members"] = $this->mysql->countRows("groups_members", "group_id", $groups[$i]["id"]);
 		}
 
 		if ($groups) return $groups;
@@ -73,14 +74,14 @@ class Groups
 	 * Vrátí název skupiny podle jejího ID
 	 */
 	function getGroupNameById($id) {
-		return MySQL::selectRow("groups", "id", $id);
+		return $this->mysql->selectRow("groups", "id", $id);
 	}
 
 	/**
 	 * Načtení seznamu členů skupiny
 	 */
 	function getMembersByGroupId($groupId) {
-		$members = MySQL::getList(
+		$members = $this->mysql->getList(
 			array("user_id", "admin"), "groups_members", array("group_id" => $groupId)
 		);
 		if (!$members) return false;
@@ -121,7 +122,7 @@ class Groups
 		if ($this->selfAuthority < $this->requiredAuth) return array("insufficientPermissions" => 1);
 
 		if ($this->isAuthorized($groupId)) {
-			return MySQL::insertRow(
+			return $this->mysql->insertRow(
 				"groups_members", array("user_id" => $uid, "group_id" => $groupId)
 			);
 		}
@@ -133,14 +134,14 @@ class Groups
 	function removeMember($uid, $groupId) {
 		if (!$this->isAuthorized($groupId)) return false;
 		if (!$this->groupIdExists($groupId)) return false;
-		return MySQL::deleteRow("groups_members", array("user_id" => $uid, "group_id" => $groupId));
+		return $this->mysql->deleteRow("groups_members", array("user_id" => $uid, "group_id" => $groupId));
 	}
 
 	/**
 	 * Zjistí počet členů ve skupině
 	 */
 	function totalMembers($groupId) {
-		return MySQL::countRows("groups_members", "group_id", $groupId);
+		return $this->mysql->countRows("groups_members", "group_id", $groupId);
 	}
 
 	/**
@@ -155,7 +156,7 @@ class Groups
 	 * Zjistí, zda-li uživatel má oprávnění správce
 	 */
 	function isAdmin($groupId) {
-		return MySQL::countRows("groups_members", array("user_id" => $this->selfUid, "group_id" => $groupId, "admin" => 1));
+		return $this->mysql->countRows("groups_members", array("user_id" => $this->selfUid, "group_id" => $groupId, "admin" => 1));
 	}
 
 	/**
@@ -163,7 +164,7 @@ class Groups
 	 */
 	function setAdmin($uid, $groupId) {
 		if (!$this->isAuthorized($groupId)) return false;
-		return MySQL::updateRow(
+		return $this->mysql->updateRow(
 			"groups_members", array("user_id" => $uid, "group_id" => $groupId), false, array("admin" => 1)
 		);
 	}
@@ -173,7 +174,7 @@ class Groups
 	 */
 	function unsetAdmin($uid, $groupId) {
 		if ($this->isAuthorized($groupId)) {
-			return MySQL::updateRow(
+			return $this->mysql->updateRow(
 				"groups_members", array("user_id" => $uid, "group_id" => $groupId), false, array("admin" => 0)
 			);
 		}

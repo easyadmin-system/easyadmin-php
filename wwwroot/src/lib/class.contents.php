@@ -4,7 +4,7 @@ class Contents
 	/**
 	 * Conscructor
 	 */
-	function Contents($selfAuthority, $selfUid) {
+	function __construct($selfAuthority, $selfUid) {
 		if (!$selfAuthority) return false;
 		if (!$selfUid) return false;
 		$this->selfAuthority = $selfAuthority;

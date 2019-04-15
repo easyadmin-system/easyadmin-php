@@ -1,7 +1,7 @@
 <?php
 /**
  * @name pagegen
- * @version 1.7
+ * @version 2.0
  * @description Simple PHP template generator
  * @depends dbglog (>= 1.0)
  * @branch testing
@@ -19,11 +19,12 @@ if (apache_getenv('TEMPL_FUNC_FILE')) {
  * @param {array} config Configuration object
  * @param {array} config {string} templPath Templates directory path (default: "templ/")
  * @param {array} config {string} content_type Content type (default: "text/html")
+ * @param {array} config {string} dictionary Dictionary (default: "dict/cs.dict.php")
  * @param {array} config {boolean} debug Debug mode
  **/
 class Pagegen
 {
-	function Pagegen($filename, $data, $conf = array()) {
+	function __construct($filename, $data, $conf = array()) {
 		# Generate data template structure
 		if (is_array($data)) {
 			foreach ($data as $index => $value) {
@@ -32,6 +33,10 @@ class Pagegen
 		} else {
 			Dbg::log("Error: Data structure for template is not an array");
 		}
+
+		# Dictionary
+		if (!isset($conf["dict"])) $conf["dict"] = "dict/cs.dict.php";
+		require_once($conf["dict"]);
 
 		# Default configuration options
 		if (!isset($conf["content_type"])) $conf["content_type"] = "text/html";
@@ -58,7 +63,6 @@ class Pagegen
 		} else {
 			Dbg::log("Error: Template file ".$templateFile." does not exist");
 		}
-		exit;
 	}
 }
 ?>

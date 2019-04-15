@@ -1,7 +1,7 @@
 <?php
 # Instance tříd
-$articles = new Articles($authority, $uid);
-$pages = new Pages($authority, $uid);
+$articles = new Articles($mysql, $authority, $uid);
+$pages = new Pages($mysql, $authority, $uid);
 
 # Výchozí hodnoty pro novou stránku
 $data["article_detail"] = array(

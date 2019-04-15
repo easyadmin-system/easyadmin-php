@@ -1,7 +1,7 @@
 <?php
 # Vytvoření objektů
-$users = new Users($authority, $uid);
-$groups = new Groups($authority, $uid, $users);
+$users = new Users($mysql, $authority, $uid);
+$groups = new Groups($mysql, $authority, $uid, $users);
 
 # Inicializace proměnných
 $action = FW::get("action");

@@ -1,6 +1,6 @@
 <?php
 # Instance tříd
-$pages = new Pages($authority, $uid);
+$pages = new Pages($mysql, $authority, $uid);
 
 # Výchozí hodnoty pro novou stránku
 $data["page_detail"] = array(

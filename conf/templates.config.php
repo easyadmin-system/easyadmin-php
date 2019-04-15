@@ -3,10 +3,13 @@
 $dict["debugMode"] = 1;
 
 # Email admina
-$dict["adminEmail"] = "jan.elznic@aionet.cz";
+$dict["adminEmail"] = "jan@elznic.com";
 
 # Statická verze šablon
-$dict["staticVersion"] = 1;
+$dict["staticVersion"] = "v1";
+
+# Výchozí jazyk systému
+$dict["defaultLanguage"] = "cs";
 
 # WYSIWYG editor
 $dict["tinymce"] = array(

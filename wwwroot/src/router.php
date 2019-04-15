@@ -28,7 +28,8 @@ if ($url == "login") {
 	}
 
 	# Aktualizace informací o uživateli
-	$request = mysql_query(
+	$request = mysqli_query(
+		$mysql->session,
 		sprintf(
 			"update %s_users set last_login = '%d', last_ip = '%s' where id like '%d'",
 			Config::get("mysqlPrefix"),
@@ -43,7 +44,8 @@ if ($url == "login") {
 	}
 
 	# Načtení informací o uživateli
-	$request = mysql_query(
+	$request = mysqli_query(
+		$mysql->session,
 		sprintf(
 			"select id, username, security_level, authority, allowed, sex, editor from %s_users where id like '%d'",
 			Config::get("mysqlPrefix"),
@@ -60,11 +62,11 @@ if ($url == "login") {
 	$data = array(
 		"user" => array()
 	);
-	list($id, $username, $security_level, $authority, $allowed, $sex, $editor) = mysql_fetch_row($request);
+	list($id, $username, $security_level, $authority, $allowed, $sex, $editor) = mysqli_fetch_row($request);
 	$uid = $id;
 
 	# Vytvoříme instanci pro práci se systémovou konfigurací
-	$sysconfig = new SysConfig($authority, $uid);
+	$sysconfig = new SysConfig($mysql, $authority, $uid);
 
 	# Je sysém uzamčen?
 	if ($sysconfig->getValue("system_lock") && $authority < 3) {
@@ -82,11 +84,11 @@ if ($url == "login") {
 	$data["user"]["editor"] = $editor;
 
 	$data["user"]["ip"] = $_SERVER["REMOTE_ADDR"];
-	$data["application"]["version"] = $system["version"];
+	$data["application"]["build"] = $system["build"];
 	$data["application"]["starsSupport"] = Config::get("starsSupport");
 	$data["application"]["admin"] = $dict["adminEmail"];
 	$data["web"]["url"] = Config::get("webUrl");
-	$data["web"]["site_root_url"] = SysConfig::getValue("site_root_url");
+	$data["web"]["site_root_url"] = $sysconfig->getValue("site_root_url");
 
 	# Odhlášení
 	if ($url == "logout") {
