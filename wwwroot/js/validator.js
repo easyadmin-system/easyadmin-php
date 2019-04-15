@@ -25,7 +25,9 @@ Validator.prototype._validate = function(e, elm) {
 	var field;
 	for (var i=0; this._fields.length > i; i++) {
 		field = document.getElementsByName(this._fields[i].fieldName)[0];
-		if (field.type == "text" || field.type == "password") {
+		console.log(field.type);
+
+		if (field.type == "text" || field.type == "password" || field.type == "select-one") {
 			if (!field.value) {
 				JAK.DOM.addClass(field, "empty");
 				this._writeError(this._fields[i].error);

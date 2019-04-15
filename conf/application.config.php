@@ -1,60 +1,80 @@
 <?php
-# Konfigurace MySQL databáze
-$config["mysqlServer"] = "localhost";
-$config["mysqlName"] = "root";
-$config["mysqlPass"] = "aaa";
-$config["mysqlDatabase"] = "easyadmin";
-$config["mysqlPrefix"] = "eas";
+$config = array(
 
-# URL veřejné části webu
-$config["webUrl"] = "http://easyadmin.cz";
+	# Konfigurace MySQL databáze
+	"mysqlServer" => "localhost",
+	"mysqlName" => "root",
+	"mysqlPass" => "aaa",
+	"mysqlDatabase" => "easyadmin",
+	"mysqlPrefix" => "eas",
 
-# Budeme zobrazovat hvězdičky?
-$config["starsSupport"] = 1;
+	# URL veřejné části webu
+	"webUrl" => "http://easyadmin.cz",
 
-# Systémová konfigurace načítající se z databáze
-$config["sys"] = array(
-	"site_title" => array(
-		"type" => "text",
-		"auth" => 3
+	# Dostupné jazyky
+	"availableLanguages" => array(
+		"cs" => array("language" => "Česky"),
+		"en" => array("language" => "Anglicky"),
+		"fr" => array("language" => "Francouzsky"),
+		"hr" => array("language" => "Chorvatsky"),
+		"it" => array("language" => "Italsky"),
+		"hu" => array("language" => "Maďarsky"),
+		"de" => array("language" => "Německy"),
+		"pl" => array("language" => "Polsky"),
+		"ru" => array("language" => "Rusky"),
+		"sk" => array("language" => "Slovensky"),
+		"es" => array("language" => "Španělsky"),
+		"ua" => array("language" => "Ukrajinsky")
 	),
-	"site_description" => array(
-		"type" => "text",
-		"auth" => 3
+
+	# Budeme zobrazovat hvězdičky?
+	"starsSupport" => 0,
+
+	# Systémová konfigurace načítající se z databáze
+	"sys" => array(
+		"site_title" => array(
+			"type" => "text",
+			"auth" => 3
+		),
+		"site_description" => array(
+			"type" => "text",
+			"auth" => 3
+		),
+		"site_keywords" => array(
+			"type" => "text",
+			"auth" => 3
+		),
+		"site_root_url" => array(
+			"type" => "text",
+			"auth" => 4
+		),
+		"login_timeout" => array(
+			"type" => "number",
+			"auth" => 4
+		),
+		"system_lock" => array(
+			"type" => "checkbox",
+			"auth" => 3
+		),
+		"updates_check" => array(
+			"type" => "checkbox",
+			"auth" => 4
+		),
+		"updates_check_interval" => array(
+			"type" => "number",
+			"auth" => 4
+		)
 	),
-	"site_keywords" => array(
-		"type" => "text",
-		"auth" => 3
-	),
-	"site_root_url" => array(
-		"type" => "text",
-		"auth" => 4
-	),
-	"login_timeout" => array(
-		"type" => "number",
-		"auth" => 4
-	),
-	"system_lock" => array(
-		"type" => "checkbox",
-		"auth" => 3
-	),
-	"updates_check" => array(
-		"type" => "checkbox",
-		"auth" => 4
-	),
-	"updates_check_interval" => array(
-		"type" => "number",
-		"auth" => 4
+
+	# Nastavení pro jednotlivé moduly
+	"mods" => array(
+
+		# Články
+		"articles" => array(
+			"articlesUrl" => "clanky"
+		)
 	)
-);
 
-# Nastavení pro jednotlivé moduly
-$config["mods"] = array(
-
-	# Články
-	"articles" => array(
-		"articlesUrl" => "clanky"
-	)
 );
 
 # Jaký typ výpisu chyb budeme zapisovat do error logu

@@ -227,7 +227,7 @@ class MySQL
 				$i++;
 			}
 		} else {
-			$where = sprintf("%s like %s", $this->mres($colName), $this->mres($value));
+			$where = sprintf("%s like '%s'", $this->mres($colName), $this->mres($value));
 		}
 
 		$request = mysqli_query(

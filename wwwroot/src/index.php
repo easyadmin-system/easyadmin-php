@@ -1,11 +1,12 @@
 <?php
-# Knihovny
+# Knihovny / třídy
 require_once("src/lib/class.helpers.php");
 require_once("src/lib/class.mysqli.php");
 require_once("src/lib/class.dbglog.php");
 require_once("src/lib/class.pagegen.php");
 require_once("src/lib/class.users.php");
 require_once("src/lib/class.groups.php");
+require_once("src/lib/class.languages.php");
 require_once("src/lib/class.contents.php");
 require_once("src/lib/class.articles.php");
 require_once("src/lib/class.pages.php");

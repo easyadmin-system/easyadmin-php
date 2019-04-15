@@ -11,3 +11,5 @@ INSERT INTO `eas_sysconfig` (`variable`, `value`) VALUES
 ('login_timeout', '30'),
 ('updates_check', '0'),
 ('updates_check_interval', '30');
+
+INSERT INTO `eas_languages` (`code`) VALUES ('cs');

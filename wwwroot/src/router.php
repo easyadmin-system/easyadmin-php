@@ -88,6 +88,8 @@ if ($url == "login") {
 	$data["application"]["build"] = $system["build"];
 	$data["application"]["starsSupport"] = Config::get("starsSupport");
 	$data["application"]["admin"] = $dict["adminEmail"];
+	$data["application"]["staticVersion"] = $dict["staticVersion"];
+	$data["application"]["debugMode"] = $dict["debugMode"];
 	$data["web"]["url"] = Config::get("webUrl");
 	$data["web"]["site_root_url"] = $sysconfig->getValue("site_root_url");
 

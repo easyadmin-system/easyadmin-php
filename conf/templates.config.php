@@ -6,7 +6,7 @@ $dict["debugMode"] = 1;
 $dict["adminEmail"] = "jan@elznic.com";
 
 # Statická verze šablon
-$dict["staticVersion"] = "v1";
+$dict["staticVersion"] = 1;
 
 # Výchozí jazyk systému
 $dict["defaultLanguage"] = "cs";

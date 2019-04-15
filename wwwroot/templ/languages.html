@@ -1,0 +1,181 @@
+<?php include "_doctype.html";?>
+<?php $__section = "configuration";?>
+<?php $__page = "languages";?>
+<?php $__title = "Jazyky";?>
+<html>
+<head>
+	<?php include "_common.html";?>
+	<title><?php echo $__title;?> | <?php echo $application["title"];?></title>
+</head>
+
+<body>
+	<?php include "templ/_head.html";?>
+
+	<div class="page" id="groups">
+		<div id="container">
+			<?php include "templ/sidebar/_configuration.html";?>
+
+			<div class="wrap">
+				<div class="title">
+					<h1><?php echo $__title;?></h1>
+				</div>
+
+				<div class="subtitle">
+					
+				</div>
+
+				<div class="content">
+					<div class="leftside">
+						<!-- Notifikace - hlášky -->
+						<?php if ($actions["action"] == "addLanguage"):?>
+							<div class="notice">
+								<?php if ($actions["status"] == 200):?>
+									<div class="window success">
+										<h2>Jazyk byl úspěšně přidán.</h2>
+									</div>
+								<?php else:?>
+									<div class="window error">
+										<?php if ($actions["errors"]["exists"] == 1):?>
+											<h2>Tento jazyk byl již přidán.</h2>
+											<p>Zvolte prosím jiný.</p>
+										<?php elseif ($actions["errors"]["notExist"] == 1):?>
+											<h2>Vybraný jazyk neexistuje.</h2>
+											<p>Vyberte jiný.</p>
+										<?php elseif ($actions["errors"]["empty"] == 1):?>
+											<h2>Žádný jazyk není vybrán.</h2>
+											<p>Nejprve vyberte nějaký.</p>
+										<?php elseif ($actions["errors"]["insufficientPermissions"] == 1):?>
+											<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+										<?php endif;?>
+									</div>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+						<?php if ($actions["action"] == "removeLanguage"):?>
+							<div class="notice">
+								<?php if ($actions["status"] == 200):?>
+									<div class="window success">
+										<h2>Jazyk byl úspěšně odebrán.</h2>
+									</div>
+								<?php else:?>
+									<div class="window error">
+										<?php if ($actions["errors"]["doesNotExist"] == 1):?>
+											<h2>Jazyk se nepodařilo odebrat.</h2>
+											<p>Jazykový překlad s tímto ID neexistuje.</p>
+										<?php elseif ($actions["errors"]["insufficientPermissions"] == 1):?>
+											<h2>Pro tuto operaci nemáte dostatečná práva.</h2>
+										<?php endif;?>
+									</div>
+								<?php endif;?>
+							</div>
+						<?php endif;?>
+
+						<!-- Seznam jazyků -->
+						<?php if ($activeLanguages):?>
+							<div class="titledBox">
+								<h2>Používané jazyky</h2>
+								<table class="itemList">
+									<thead>
+										<tr>
+											<th>Jazyk</th>
+											<th>Akce</th>
+										</tr>
+									</thead>
+									<?php foreach ($data["activeLanguages"] as $key => $val): ?>
+										<tr<?php if (($key % 2) != 0) echo ' class="even"';?>>
+											<!-- Položka -->
+											<td class="leftalign">
+												<img src="/img/ico/lang/<?php echo $val['code'];?>.gif" alt="<?php echo $availableLanguages[$val['code']]['language'];?>" /> <?php echo $availableLanguages[$val['code']]['language'];?>
+											</td>
+
+											<!-- Akce -->
+											<td class="centeralign">
+												<?php if ($user["authority"] >= $requiredAuth):?>
+													<a class="remove-language" href="/languages?action=removeLanguage&amp;code=<?php echo $val['code'];?>">
+														<img src="/img/ico/ico-delete.png" alt="Odebrat jazyk <?php echo $availableLanguages[$val['code']]['language'];?>" title="Odebrat jazyk a smazat veškerý obsah" />
+													</a>
+												<?php endif;?>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+
+								</table> 
+							</div>
+						<?php endif;?>
+					</div>
+
+					<!-- Pravá strana - postranní box -->
+					<div class="rightside">
+						<?php if ($user["authority"] >= $requiredAuth):?>
+							<div class="titledBox side">
+								<h2>Možnosti</h2>
+								<div class="inside">
+									<ul class="linklist">
+										<li><a href="#" id="addLangButt">Přidat jazyk</a></li>
+									</ul>
+								</div>
+							</div>
+						<?php endif;?>
+					</div>
+					<div class="clear"></div>
+
+					<!-- JS Popup pro přidání nového -->
+					<div id="addLanguageWin" class="popup displaynopopup">
+						<h4>Přidat jazyk</h4>
+
+						<div class="form p350">
+							<form action="/languages" id="addLanguageForm" method="get">
+								<p>
+									<label for="available_languages" class="bold">Dostupné jazyky:</label><br />
+									<select name="code" id="available_languages">
+										<option value="">-- Vyberte --</option>
+										<?php foreach ($data["availableLanguages"] as $key => $val): ?>
+											<option value="<?php echo $key; ?>"><?php echo $val['language']; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</p>
+
+								<p id="createGroupValidErr" class="errors nodisplay"></p>
+
+								<p class="last">
+									<input type="hidden" name="action" value="addLanguage" />
+									<input type="submit" name="submit-button" class="button" value="Přidat jazyk" />
+								</p>
+							</form>
+
+							<script type="text/javascript">
+								/* Validace formuláře */
+								var validCreateGroup = new Validator(
+									"addLanguageForm",
+									"createGroupValidErr",
+									[
+										{
+											fieldName: "code",
+											error: "Nejprve vyberte jazyk."
+										}
+									]
+								);
+
+								/* Groups */
+								var languagesList = new Languages.List();
+							</script>
+						</div>
+					</div>
+					<script type="text/javascript">
+						var addLanguage = new Popup({openOnRefresh: false, callElm: ["addLangButt"], popUpContent: "addLanguageWin"});
+					</script>
+
+
+
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<?php include "templ/_foot.html";?>
+
+	<?php include "templ/_debug.html";?>
+</body>
+
+</html>
