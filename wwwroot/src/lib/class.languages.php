@@ -19,7 +19,7 @@ class Languages
 		if ($this->selfAuthority < $this->requiredAuth) return array("insufficientPermissions" => 1);
 
 		if (!$code) $err["empty"] = 1;
-		if ($this->langExists($code)) $err["exists"] = 1;
+		if ($this->isActive($code)) $err["exists"] = 1;
 
 		if (sizeof($err)) {
 			return $err;
@@ -37,21 +37,21 @@ class Languages
 	 */
 	function removeLanguage($code) {
 		if ($this->selfAuthority < $this->requiredAuth) return array("insufficientPermissions" => 1);
-		if (!$this->langExists($code)) return array("doesNotExist" => 1);
+		if (!$this->isActive($code)) return array("doesNotExist" => 1);
 		return $this->mysql->deleteRow("languages", "code", $code);
 	}
 
 	/**
 	 * Zjistíme, zda-li je již jatyk používán
 	 */
-	function langExists($code) {
+	function isActive($code) {
 		return $this->mysql->countRows("languages", "code", $code);
 	}
 
 	/**
 	 * Načtení abecedního seznamu aktivních jazyků
 	 */
-	function getActiveLanguages() {
+	public function getActiveLanguages() {
 		$languages = $this->mysql->getList(array("code"), "languages", false, array("code"));
 		if ($languages) return $languages;
 		return false;

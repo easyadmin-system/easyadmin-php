@@ -179,14 +179,22 @@ case "edit-article":
 											<div class="row">
 												<label for="static">Statická stránka:</label><br />
 												<select name="static" id="static">
-													<option value="1"<?php echo $page_detail["static"] ? $sel:'';?>>Ano</option>
-													<option value="0"<?php echo $page_detail["static"] ? '':$sel;?>>Ne</option>
+													<option value="1"<?php echo $page_detail['static'] ? $sel:'';?>>Ano</option>
+													<option value="0"<?php echo $page_detail['static'] ? '':$sel;?>>Ne</option>
 												</select>
 											</div>
 										<?php else:?>
 											<input type="hidden" name="static" value="1" />
 										<?php endif;?>
 									<?php endif;?>
+									<div class="row">
+										<label for="public">Jazyk:</label><br />
+										<select name="language" id="language_code">
+											<?php foreach ($activeLanguages as $key => $val): ?>
+												<option value="<?php echo $val['code']; ?>"<?php echo $page_detail['language'] == $val['code'] ? $sel:''; ?>><?php echo $availableLanguages[$val['code']]['language']; ?></option>
+											<?php endforeach; ?>
+										</select>
+									</div>
 									<?php if ($page_detail["publish_date"]):?>
 										<p>
 											<b>Naposledy publikováno:</b><br />
@@ -200,9 +208,9 @@ case "edit-article":
 											<h6>Další možnosti:</h6>
 											<ul class="linklist">
 												<?php if ($__mod == "page"):?>
-													<li><a target="_blank" href="<?php echo $web["site_root_url"];?>/<?php echo $page_detail["url"];?>">Zobrazit stránku na webu</a></li>
+													<li><a target="_blank" href="<?php echo $web['site_root_url'];?>/<?php echo $page_detail['url'];?>">Zobrazit stránku na webu</a></li>
 												<?php elseif ($__mod == "article"):?>
-													<li><a target="_blank" href="<?php echo $web["site_root_url"];?>/<?php echo $articlesUrl;?>/<?php echo $page_detail["url"];?>">Zobrazit článek na webu</a></li>
+													<li><a target="_blank" href="<?php echo $web['site_root_url'];?>/<?php echo $articlesUrl;?>/<?php echo $page_detail['url'];?>">Zobrazit článek na webu</a></li>
 												<?php endif;?>
 											</ul>
 										</div>

@@ -26,9 +26,10 @@ class Pages
 		$err = array();
 
 		$page = FW::validPostData(array(
-			"title", "url", "content", "public", "static", "meta_description",
+			"language", "title", "url", "content", "public", "static", "meta_description",
 			"keywords", "priority", "edit_frequency", "noindex"
 		));
+		if (!$page["language"]) $err["languageIsEmpty"] = 1;
 		if (!$page["title"]) $err["titleIsEmpty"] = 1;
 		if (!$page["url"]) $err["urlIsEmpty"] = 1;
 		$page["url"] = FW::parseRelativeUrl($page["url"]);
@@ -124,7 +125,7 @@ class Pages
 	 * Načte seznam všech stránek
 	 */
 	public function getPageList() {
-		return $this->mysql->getList(array("id", "url", "public", "title"), "pages", false, array("title"));
+		return $this->mysql->getList(array("id", "language", "url", "public", "title"), "pages", false, array("title"));
 		
 	}
 }

@@ -1,6 +1,12 @@
 <?php
 # Instance
 $pages = new Pages($mysql, $authority, $uid);
+$languages = new Languages($mysql, $authority);
+
+# Dostupné jazyky
+$data["activeLanguages"] = $languages->getActiveLanguages();
+$data["availableLanguages"] = $languages->getAvailableLanguages();
+
 
 # URL parametry
 $action = FW::get("action");

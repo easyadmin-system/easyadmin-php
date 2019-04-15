@@ -58,6 +58,7 @@
 									<thead>
 										<tr>
 											<th>Titulek</th>
+											<th>Jazyk</th>
 											<th>URL adresa</th>
 											<th>Publikováno</th>
 											<th>Akce</th>
@@ -67,9 +68,15 @@
 										<tr<?php if (($k % 2) != 0) echo ' class="even"';?>>
 											<td class="leftalign">
 												<!-- Titulek -->
-												<a href="/edit-page?action=edit&amp;pageId=<?php echo $v["id"];?>">
+												<a href="/edit-page?action=edit&amp;pageId=<?php echo $v['id'];?>">
 													<?php echo $v["title"];?>
 												</a>
+											</td>
+
+											<td class="leftalign">
+												<!-- Jazyk -->
+												<img src="/img/ico/lang/<?php echo $v['language'];?>.gif" alt="<?php echo $availableLanguages[$v['language']]['language'];?>" />
+												<?php echo $availableLanguages[$v['language']]['language'];?>
 											</td>
 
 											<!-- URL adresa -->

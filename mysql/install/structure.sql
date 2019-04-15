@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `eas_languages` (
 
 CREATE TABLE IF NOT EXISTS `eas_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `public` tinyint(4) NOT NULL DEFAULT '0',
   `static` tinyint(4) NOT NULL DEFAULT '0',
@@ -81,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `eas_pages` (
   `keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `publish_date` int(11) NOT NULL DEFAULT '0',
   `author` int(11) NOT NULL DEFAULT '0',
+  FOREIGN KEY (`language`) REFERENCES eas_languages(`code`) ON DELETE CASCADE,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
