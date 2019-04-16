@@ -21,7 +21,7 @@ HOST=$(cat /etc/hostname)
 read -p "Project name (easyadmin-php): " PROJECT
 PROJECT=${PROJECT:-easyadmin-php}
 read -p "Domain (easyadmin.test): " DOMAIN
-PROJECT=${PROJECT:-easyadmin.test}
+DOMAIN=${DOMAIN:-easyadmin.test}
 read -p "MySQL host (default: localhost): " DB_HOST
 DB_HOST=${DB_HOST:-localhost}
 read -p "MySQL username (default: root): " DB_USERNAME
