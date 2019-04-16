@@ -2,14 +2,14 @@
 $config = array(
 
 	# Konfigurace MySQL databáze
-	"mysqlServer" => "localhost",
-	"mysqlName" => "root",
-	"mysqlPass" => "aaa",
-	"mysqlDatabase" => "easyadmin",
-	"mysqlPrefix" => "eas",
+	"mysqlServer" => "__DB_HOST__",
+	"mysqlName" => "__DB_USERNAME__",
+	"mysqlPass" => "__DB_PASSWORD__",
+	"mysqlDatabase" => "__DB_DATABASE__",
+	"mysqlPrefix" => "__DB_TABLE_PREFIX__",
 
 	# URL veřejné části webu
-	"webUrl" => "http://easyadmin.cz",
+	"webUrl" => "__DOMAIN__",
 
 	# Dostupné jazyky
 	"availableLanguages" => array(

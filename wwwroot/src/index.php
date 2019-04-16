@@ -14,8 +14,8 @@ require_once("src/lib/class.sysconfig.php");
 require_once("src/lib/class.notes.php");
 
 # Konfigurace
-require_once("../conf/templates.config.php");
-require_once("../conf/application.config.php");
+require_once(apache_getenv('APP_CONFIG_FILE'));
+require_once(apache_getenv('TEMPL_CONFIG_FILE'));
 require_once("src/vars.php");
 require_once("src/configinit.php");
 

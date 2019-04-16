@@ -28,7 +28,7 @@ class Dbg
 		if ($des) $output .= $des.":"."\n";
 		$output .= print_r($var, true);
 
-		$file = fopen("log/debug.log", "a");
+		$file = fopen(apache_getenv('DEBUG_LOG_FILE'), "a");
 		//if (gettype($var == "boolean")) $var = ($var == 1 ? "true" : "false");
 		fwrite($file, ($output."\n"));
 		fclose($file);
