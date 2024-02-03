@@ -249,7 +249,7 @@ img															{ border: 0; }
 .content .titledBox .inside .row label						{ font-weight: bold; color: #474747; }
 .content .titledBox .inside .row select,
  .content .titledBox .inside .row input[type=text]			{
-	color: #4F5660; border: 1px solid #C7C7C7;
+	width: 98%; color: #4F5660; border: 1px solid #C7C7C7;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#EDEDED), to(#FEFEFE));
 	background: -webkit-linear-gradient(top, #EDEDED, #FEFEFE);
 	background: -moz-linear-gradient(top, #EDEDED, #FEFEFE);
