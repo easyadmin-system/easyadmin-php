@@ -86,6 +86,7 @@ if ($url == "login") {
 	$data["user"]["ip"] = $_SERVER["REMOTE_ADDR"];
 	$data["application"]["title"] = $system["title"];
 	$data["application"]["build"] = $system["build"];
+	$data["application"]["releaseDate"] = $system["releaseDate"];
 	$data["application"]["starsSupport"] = Config::get("starsSupport");
 	$data["application"]["admin"] = $dict["adminEmail"];
 	$data["application"]["staticVersion"] = $dict["staticVersion"];
