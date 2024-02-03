@@ -12,7 +12,7 @@ if ($mysql->connect(Config::get("mysqlServer"), Config::get("mysqlName"), Config
 	}
 
 	mysqli_query($mysql->session, "SET NAMES utf8");
-	mysqli_query($mysql->session, "SET COLLATION utf8_general_ci");
+	// mysqli_query($mysql->session, "SET COLLATION utf8_general_ci");
 } else {
 	// Nepodařilo se připojit k DB
 	$page = new Pagegen("notice.html", $data = array("status" => 500));
