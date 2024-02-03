@@ -1,8 +1,8 @@
 <?php
 /**
- * @name phpfw
- * @version 1.1
- * @description Miniaturní PHP framework
+ * @name helpers
+ * @version 1.1.1
+ * @description Knihovna pomocných funkcí pro PHP
  * @branch unstable
  */
 class FW
@@ -89,7 +89,8 @@ class FW
 						$array[$key] = "b\"".$value;
 						break;
 					case "null":
-						$array[$key] = (unset) $value;
+						$value = NULL;
+						$array[$key] = $value;
 						break;
 				}
 			}
